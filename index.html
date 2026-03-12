@@ -462,7 +462,6 @@ body {
     </div>
     <div class="topbar-right">
       <div class="date-badge" id="today-badge"></div>
-      <a href="upload.html" style="font-family:'DM Sans',sans-serif;font-size:12px;color:#9C9A96;background:none;border:1px solid #3A3A36;border-radius:6px;padding:6px 12px;text-decoration:none;transition:all 0.15s;" onmouseover="this.style.color='#F7F6F3';this.style.borderColor='#6B6860'" onmouseout="this.style.color='#9C9A96';this.style.borderColor='#3A3A36'">Upload Report</a>
     </div>
   </div>
 
@@ -788,54 +787,55 @@ body {
         <select class="date-select" id="cf-date" onchange="loadCashFlow()"></select>
       </div>
 
-      <div class="three-col mb-24">
-        <div class="kpi-card green">
-          <div class="kpi-label">AR Expected (Next 30d)</div>
-          <div class="kpi-value" id="cf-ar-30">—</div>
-        </div>
-        <div class="kpi-card red">
-          <div class="kpi-label">AP Due (Next 30d)</div>
-          <div class="kpi-value" id="cf-ap-30">—</div>
-        </div>
-        <div class="kpi-card blue">
-          <div class="kpi-label">Projected Net (Cash + AR - AP)</div>
-          <div class="kpi-value" id="cf-net-30">—</div>
-        </div>
+      <!-- IMPROVEMENT -->
+      <div class="division-header impr" style="border-radius:6px 6px 0 0;margin-bottom:0;">🔧 Improvement Division</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:4px;background:var(--surface);border:1px solid var(--border);border-top:none;padding:16px;border-radius:0 0 6px 6px;">
+        <div><div class="kpi-label">AR Expected (Next 30d)</div><div style="font-family:'DM Mono',monospace;font-size:18px;margin-top:6px;color:var(--green)" id="cf-impr-ar-30">—</div></div>
+        <div><div class="kpi-label">AP Due (Next 30d)</div><div style="font-family:'DM Mono',monospace;font-size:18px;margin-top:6px;color:var(--red)" id="cf-impr-ap-30">—</div></div>
+        <div><div class="kpi-label">Projected Net</div><div style="font-family:'DM Mono',monospace;font-size:18px;margin-top:6px;" id="cf-impr-net-30">—</div></div>
       </div>
-
-      <div class="two-col mb-24">
+      <div class="two-col mb-24" style="margin-top:12px;">
         <div class="card">
-          <div class="card-header"><div class="card-title">AR — Expected Incoming Payments</div></div>
-          <table class="data-table" id="cf-ar-table">
-            <thead>
-              <tr>
-                <th>Client</th>
-                <th>Div</th>
-                <th style="text-align:right">Amount</th>
-                <th>Expected Date</th>
-                <th>Days Away</th>
-              </tr>
-            </thead>
+          <div class="division-header impr">AR — Expected Incoming</div>
+          <table class="data-table" id="cf-impr-ar-table">
+            <thead><tr><th>Client</th><th style="text-align:right">Amount</th><th>Expected Date</th><th>Days Away</th></tr></thead>
             <tbody></tbody>
           </table>
         </div>
         <div class="card">
-          <div class="card-header"><div class="card-title">AP — Upcoming Payments Due</div></div>
-          <table class="data-table" id="cf-ap-table">
-            <thead>
-              <tr>
-                <th>Vendor</th>
-                <th>Div</th>
-                <th style="text-align:right">Amount</th>
-                <th>Due Date</th>
-                <th>Days Until Due</th>
-              </tr>
-            </thead>
+          <div class="division-header impr">AP — Payments Due</div>
+          <table class="data-table" id="cf-impr-ap-table">
+            <thead><tr><th>Vendor</th><th style="text-align:right">Amount</th><th>Due Date</th><th>Days Until Due</th></tr></thead>
             <tbody></tbody>
           </table>
         </div>
       </div>
 
+      <!-- RESTORATION -->
+      <div class="division-header rest" style="border-radius:6px 6px 0 0;margin-bottom:0;">🏠 Restoration Division</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:4px;background:var(--surface);border:1px solid var(--border);border-top:none;padding:16px;border-radius:0 0 6px 6px;">
+        <div><div class="kpi-label">AR Expected (Next 30d)</div><div style="font-family:'DM Mono',monospace;font-size:18px;margin-top:6px;color:var(--green)" id="cf-rest-ar-30">—</div></div>
+        <div><div class="kpi-label">AP Due (Next 30d)</div><div style="font-family:'DM Mono',monospace;font-size:18px;margin-top:6px;color:var(--red)" id="cf-rest-ap-30">—</div></div>
+        <div><div class="kpi-label">Projected Net</div><div style="font-family:'DM Mono',monospace;font-size:18px;margin-top:6px;" id="cf-rest-net-30">—</div></div>
+      </div>
+      <div class="two-col mb-24" style="margin-top:12px;">
+        <div class="card">
+          <div class="division-header rest">AR — Expected Incoming</div>
+          <table class="data-table" id="cf-rest-ar-table">
+            <thead><tr><th>Client</th><th style="text-align:right">Amount</th><th>Expected Date</th><th>Days Away</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="card">
+          <div class="division-header rest">AP — Payments Due</div>
+          <table class="data-table" id="cf-rest-ap-table">
+            <thead><tr><th>Vendor</th><th style="text-align:right">Amount</th><th>Due Date</th><th>Days Until Due</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- CHART + HISTORY -->
       <div class="card mb-24">
         <div class="card-header"><div class="card-title">Cash &amp; AR — Historical Trend</div></div>
         <div class="card-body">
@@ -1298,90 +1298,85 @@ async function loadAP() {
 // ── CASH FLOW ─────────────────────────────────────────────────────────────
 async function loadCashFlow() {
   const date = document.getElementById('cf-date').value;
-
-  // ── UPCOMING AR PAYMENTS ──────────────────────────────────────────────
-  const { data: arData } = await db.from('ar_items').select('*')
-    .eq('report_date', date).not('expected_payment_date', 'is', null)
-    .order('expected_payment_date');
-
   const today = new Date(); today.setHours(0,0,0,0);
   const in30  = new Date(today); in30.setDate(in30.getDate() + 30);
+  const snap  = allSnapshots.find(s => s.report_date === date);
 
-  const arRows = (arData || []).filter(r => r.expected_payment_date);
-  const arNext30 = arRows.filter(r => {
-    const d = new Date(r.expected_payment_date + 'T00:00:00');
-    return d >= today && d <= in30;
-  });
+  // Fetch AR and AP for selected date
+  const [{ data: arData }, { data: apData }] = await Promise.all([
+    db.from('ar_items').select('*').eq('report_date', date).order('expected_payment_date'),
+    db.from('ap_items').select('*').eq('report_date', date).order('due_date'),
+  ]);
 
-  document.getElementById('cf-ar-30').textContent =
-    fmt(arNext30.reduce((s,r) => s + (r.balance||0), 0));
-
-  const arTbody = document.querySelector('#cf-ar-table tbody');
-  if (!arRows.length) {
-    arTbody.innerHTML = '<tr><td colspan="5" class="empty-state">No expected payment dates on AR items.</td></tr>';
-  } else {
-    arTbody.innerHTML = arRows.map(r => {
+  const renderARRows = (rows) => {
+    const withDates = rows.filter(r => r.expected_payment_date);
+    if (!withDates.length) return '<tr><td colspan="4" class="empty-state">No expected payment dates.</td></tr>';
+    return withDates.map(r => {
       const d = new Date(r.expected_payment_date + 'T00:00:00');
       const days = Math.round((d - today) / 86400000);
-      const dClass = days < 0 ? 'days-late' : days <= 7 ? 'days-warn' : 'days-ok';
-      const divLabel = r.division === 'improvement' ? 'Impr' : 'Rest';
+      const cls = days < 0 ? 'days-late' : days <= 7 ? 'days-warn' : 'days-ok';
       return `<tr>
         <td>${r.client}</td>
-        <td><span class="badge ${r.division==='improvement'?'blue':'green'}">${divLabel}</span></td>
         <td class="mono right">${fmt(r.balance)}</td>
         <td class="mono muted">${fmtDate(r.expected_payment_date)}</td>
-        <td><span class="days-badge ${dClass}">${days >= 0 ? days+'d' : 'Overdue'}</span></td>
+        <td><span class="days-badge ${cls}">${days >= 0 ? days+'d' : 'Overdue'}</span></td>
       </tr>`;
-    }).join('');
-  }
+    }).join('') + `<tr class="total-row"><td>Total</td>
+      <td class="mono right">${fmt(withDates.reduce((s,r)=>s+(r.balance||0),0))}</td>
+      <td colspan="2"></td></tr>`;
+  };
 
-  // ── UPCOMING AP PAYMENTS ──────────────────────────────────────────────
-  const { data: apData } = await db.from('ap_items').select('*')
-    .eq('report_date', date).not('due_date', 'is', null)
-    .order('due_date');
-
-  const apRows = (apData || []).filter(r => r.due_date && r.priority !== 'Hold');
-  const apNext30 = apRows.filter(r => {
-    const d = new Date(r.due_date + 'T00:00:00');
-    return d >= today && d <= in30;
-  });
-
-  document.getElementById('cf-ap-30').textContent =
-    fmt(apNext30.reduce((s,r) => s + (r.amount||0), 0));
-
-  // Projected net
-  const arAmt = arNext30.reduce((s,r) => s + (r.balance||0), 0);
-  const apAmt = apNext30.reduce((s,r) => s + (r.amount||0), 0);
-  const snap = allSnapshots.find(s => s.report_date === date);
-  const projNet = (snap ? snap.total_cash : 0) + arAmt - apAmt;
-  const netEl = document.getElementById('cf-net-30');
-  netEl.textContent = fmt(projNet);
-  netEl.style.color = projNet < 0 ? 'var(--red)' : projNet < 25000 ? 'var(--amber)' : 'var(--green)';
-
-  const apTbody = document.querySelector('#cf-ap-table tbody');
-  if (!apRows.length) {
-    apTbody.innerHTML = '<tr><td colspan="5" class="empty-state">No upcoming AP due dates.</td></tr>';
-  } else {
-    apTbody.innerHTML = apRows.map(r => {
+  const renderAPRows = (rows) => {
+    const withDates = rows.filter(r => r.due_date && r.priority !== 'Hold');
+    if (!withDates.length) return '<tr><td colspan="4" class="empty-state">No upcoming due dates.</td></tr>';
+    return withDates.map(r => {
       const d = new Date(r.due_date + 'T00:00:00');
       const days = Math.round((d - today) / 86400000);
-      const dClass = days < 0 ? 'flow-negative' : days <= 7 ? 'flow-negative' : '';
-      const pClass = r.priority === 'Urgent' ? 'red' : r.priority === 'High' ? 'amber' : 'blue';
-      const divLabel = r.division === 'improvement' ? 'Impr' : 'Rest';
+      const cls = days < 0 ? 'flow-negative' : days <= 7 ? 'flow-negative' : '';
       return `<tr>
         <td>${r.vendor}</td>
-        <td><span class="badge ${r.division==='improvement'?'blue':'green'}">${divLabel}</span></td>
         <td class="mono right">${fmt(r.amount)}</td>
         <td class="mono muted">${fmtDate(r.due_date)}</td>
-        <td class="mono right ${dClass}">${days !== null ? days+'d' : '—'}</td>
+        <td class="mono right ${cls}">${days+'d'}</td>
       </tr>`;
-    }).join('');
+    }).join('') + `<tr class="total-row"><td>Total</td>
+      <td class="mono right">${fmt(withDates.reduce((s,r)=>s+(r.amount||0),0))}</td>
+      <td colspan="2"></td></tr>`;
+  };
+
+  // Split by division
+  for (const div of ['impr', 'rest']) {
+    const divFull = div === 'impr' ? 'improvement' : 'restoration';
+    const arRows = (arData || []).filter(r => r.division === divFull);
+    const apRows = (apData || []).filter(r => r.division === divFull);
+
+    // 30-day totals
+    const ar30 = arRows.filter(r => r.expected_payment_date).filter(r => {
+      const d = new Date(r.expected_payment_date + 'T00:00:00');
+      return d >= today && d <= in30;
+    }).reduce((s,r) => s + (r.balance||0), 0);
+
+    const ap30 = apRows.filter(r => r.due_date && r.priority !== 'Hold').filter(r => {
+      const d = new Date(r.due_date + 'T00:00:00');
+      return d >= today && d <= in30;
+    }).reduce((s,r) => s + (r.amount||0), 0);
+
+    const cash = snap ? (div === 'impr' ? snap.impr_cash : snap.rest_cash) : 0;
+    const net30 = (cash || 0) + ar30 - ap30;
+
+    document.getElementById(`cf-${div}-ar-30`).textContent = fmt(ar30);
+    document.getElementById(`cf-${div}-ap-30`).textContent = fmt(ap30);
+    const netEl = document.getElementById(`cf-${div}-net-30`);
+    netEl.textContent = fmt(net30);
+    netEl.style.color = net30 < 0 ? 'var(--red)' : net30 < 25000 ? 'var(--amber)' : 'var(--green)';
+
+    document.querySelector(`#cf-${div}-ar-table tbody`).innerHTML = renderARRows(arRows);
+    document.querySelector(`#cf-${div}-ap-table tbody`).innerHTML = renderAPRows(apRows);
   }
 
-  // ── HISTORY TABLE ─────────────────────────────────────────────────────
+  // History table
   const snapData = [...allSnapshots].reverse();
-  const tbody = document.querySelector('#history-table tbody');
-  tbody.innerHTML = [...snapData].reverse().map((s, i, arr) => {
+  document.querySelector('#history-table tbody').innerHTML = [...snapData].reverse().map((s, i, arr) => {
     const prev = arr[i + 1];
     const chg  = prev ? s.total_cash - prev.total_cash : null;
     return `<tr>
@@ -1391,45 +1386,34 @@ async function loadCashFlow() {
       <td class="mono right">${fmt(s.total_ap)}</td>
       <td class="mono right">${fmt(s.credit_debt)}</td>
       <td class="mono right" style="font-weight:500">${fmt(s.net_availability)}</td>
-      <td class="mono right ${chg == null ? '' : chg >= 0 ? 'flow-positive' : 'flow-negative'}">
-        ${chg == null ? '—' : (chg >= 0 ? '+' : '') + fmt(chg)}</td>
+      <td class="mono right ${chg==null?'':chg>=0?'flow-positive':'flow-negative'}">
+        ${chg==null?'—':(chg>=0?'+':'')+fmt(chg)}</td>
     </tr>`;
   }).join('');
 
-  // ── CHART ─────────────────────────────────────────────────────────────
-  const labels   = snapData.map(s => { const d = new Date(s.report_date + 'T00:00:00');
-    return d.toLocaleDateString('en-US', { month:'short', day:'numeric' }); });
-  const cashVals = snapData.map(s => s.total_cash);
-  const arVals   = snapData.map(s => s.total_ar);
-  const netVals  = snapData.map(s => s.net_availability);
-
+  // Chart
+  const labels   = snapData.map(s => { const d = new Date(s.report_date+'T00:00:00');
+    return d.toLocaleDateString('en-US',{month:'short',day:'numeric'}); });
   if (cashflowChart) cashflowChart.destroy();
   cashflowChart = new Chart(document.getElementById('cashflow-chart'), {
     type: 'line',
     data: {
       labels,
       datasets: [
-        { label: 'Cash', data: cashVals, borderColor: '#1A3C5E',
-          backgroundColor: 'rgba(26,60,94,0.05)', borderWidth: 2,
-          pointRadius: 3, tension: 0.3, fill: true },
-        { label: 'AR', data: arVals, borderColor: '#2D6A4F',
-          borderWidth: 1.5, pointRadius: 2, tension: 0.3, fill: false },
-        { label: 'Net Availability', data: netVals, borderColor: '#92580A',
-          borderDash: [4,3], borderWidth: 1.5, pointRadius: 2, tension: 0.3, fill: false },
+        { label:'Cash',            data: snapData.map(s=>s.total_cash),        borderColor:'#1A3C5E', backgroundColor:'rgba(26,60,94,0.05)', borderWidth:2, pointRadius:3, tension:0.3, fill:true },
+        { label:'AR',              data: snapData.map(s=>s.total_ar),           borderColor:'#2D6A4F', borderWidth:1.5, pointRadius:2, tension:0.3, fill:false },
+        { label:'Net Availability',data: snapData.map(s=>s.net_availability),   borderColor:'#92580A', borderDash:[4,3], borderWidth:1.5, pointRadius:2, tension:0.3, fill:false },
       ]
     },
     options: {
-      responsive: true, maintainAspectRatio: false,
+      responsive:true, maintainAspectRatio:false,
       plugins: {
-        legend: { labels: { font: { family: 'DM Sans', size: 11 }, color: '#6B6860', boxWidth: 12 } },
-        tooltip: { callbacks: { label: ctx => ' ' + fmt(ctx.parsed.y) } }
+        legend:{ labels:{ font:{family:'DM Sans',size:11}, color:'#6B6860', boxWidth:12 } },
+        tooltip:{ callbacks:{ label: ctx => ' '+fmt(ctx.parsed.y) } }
       },
       scales: {
-        x: { grid: { color: '#F0EEE8' },
-          ticks: { font: { family: 'DM Mono', size: 10 }, color: '#9C9A96' } },
-        y: { grid: { color: '#F0EEE8' },
-          ticks: { font: { family: 'DM Mono', size: 10 }, color: '#9C9A96',
-            callback: v => '$' + (v/1000).toFixed(0) + 'k' } }
+        x:{ grid:{color:'#F0EEE8'}, ticks:{font:{family:'DM Mono',size:10},color:'#9C9A96'} },
+        y:{ grid:{color:'#F0EEE8'}, ticks:{font:{family:'DM Mono',size:10},color:'#9C9A96', callback: v=>'$'+(v/1000).toFixed(0)+'k'} }
       }
     }
   });
