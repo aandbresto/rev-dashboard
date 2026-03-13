@@ -699,6 +699,7 @@ body {
           <table class="data-table" id="ar-impr-table">
             <thead>
               <tr>
+                <th>Invoice #</th>
                 <th>Client</th>
                 <th style="text-align:right">Balance</th>
                 <th>Due Date</th>
@@ -715,6 +716,7 @@ body {
           <table class="data-table" id="ar-rest-table">
             <thead>
               <tr>
+                <th>Invoice #</th>
                 <th>Client</th>
                 <th style="text-align:right">Balance</th>
                 <th>Due Date</th>
@@ -1241,11 +1243,12 @@ async function loadAR() {
   const rest = (data || []).filter(r => r.division === 'restoration');
 
   const renderAR = (rows) => {
-    if (!rows.length) return `<tr><td colspan="6" class="empty-state">No data.</td></tr>`;
+    if (!rows.length) return `<tr><td colspan="7" class="empty-state">No data.</td></tr>`;
     const body = rows.map(r => {
       const days = r.days_outstanding;
       const daysClass = days == null ? '' : days > 45 ? 'days-late' : days > 30 ? 'days-warn' : 'days-ok';
       return `<tr class="ar-client-row">
+        <td class="mono muted" style="white-space:nowrap;">${r.invoice_number || '—'}</td>
         <td>${r.client}</td>
         <td class="mono right">${fmt(r.balance)}</td>
         <td class="mono muted">${fmtDate(r.due_date)}</td>
@@ -1257,7 +1260,7 @@ async function loadAR() {
     const total = rows.reduce((s, r) => s + (r.balance || 0), 0);
     return body + `<tr class="total-row">
       <td>Total</td><td class="mono right">${fmt(total)}</td>
-      <td colspan="4"></td></tr>`;
+      <td colspan="5"></td></tr>`;
   };
 
   document.querySelector('#ar-impr-table tbody').innerHTML = renderAR(impr);
