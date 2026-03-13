@@ -35,7 +35,7 @@
       "balance": 1631.2,
       "invoice_date": "2026-01-13",
       "due_date": "2026-03-27",
-      "days_outstanding": 59.0,
+      "days_outstanding": 59,
       "expected_payment_date": "2026-03-27",
       "notes": "3/23 Check run"
     },
@@ -47,7 +47,7 @@
       "balance": 21101.23,
       "invoice_date": "2026-02-04",
       "due_date": "2026-03-21",
-      "days_outstanding": 37.0,
+      "days_outstanding": 37,
       "expected_payment_date": "2026-03-20",
       "notes": "03/10 - work completed"
     },
@@ -59,7 +59,7 @@
       "balance": 11196.7,
       "invoice_date": "2026-02-27",
       "due_date": "2026-04-13",
-      "days_outstanding": 14.0,
+      "days_outstanding": 14,
       "expected_payment_date": "2026-03-20",
       "notes": "03/10 - work completed"
     },
@@ -71,7 +71,7 @@
       "balance": 939.49,
       "invoice_date": "2026-03-04",
       "due_date": "2026-04-03",
-      "days_outstanding": 9.0,
+      "days_outstanding": 9,
       "expected_payment_date": "2026-04-03",
       "notes": "03/06 - fully approved"
     },
@@ -83,7 +83,7 @@
       "balance": 739.83,
       "invoice_date": "2026-03-05",
       "due_date": "2026-04-04",
-      "days_outstanding": 8.0,
+      "days_outstanding": 8,
       "expected_payment_date": "2026-04-04",
       "notes": "03/06 - fully approved"
     },
@@ -95,7 +95,7 @@
       "balance": 10627.27,
       "invoice_date": "2026-03-06",
       "due_date": "2026-04-05",
-      "days_outstanding": 7.0,
+      "days_outstanding": 7,
       "expected_payment_date": "2026-04-05",
       "notes": null
     },
@@ -107,7 +107,7 @@
       "balance": 627.2,
       "invoice_date": "2026-03-11",
       "due_date": "2026-04-10",
-      "days_outstanding": 2.0,
+      "days_outstanding": 2,
       "expected_payment_date": "2026-04-11",
       "notes": "03/11 - pending EPO"
     },
@@ -119,7 +119,7 @@
       "balance": 712.0,
       "invoice_date": "2026-03-12",
       "due_date": "2026-04-11",
-      "days_outstanding": 1.0,
+      "days_outstanding": 1,
       "expected_payment_date": "2026-03-27",
       "notes": "03/12 - to be paid 03/23"
     },
@@ -131,7 +131,7 @@
       "balance": 4764.45,
       "invoice_date": "2025-09-19",
       "due_date": "2025-09-22",
-      "days_outstanding": 175.0,
+      "days_outstanding": 175,
       "expected_payment_date": null,
       "notes": "02/23 - Reached out to Collections company, all information sent to them for collections"
     },
@@ -143,7 +143,7 @@
       "balance": 3730.35,
       "invoice_date": "2025-12-04",
       "due_date": "2025-12-04",
-      "days_outstanding": 99.0,
+      "days_outstanding": 99,
       "expected_payment_date": null,
       "notes": "03/09 - Emailed Mike with informaion about job"
     },
@@ -155,7 +155,7 @@
       "balance": 850.0,
       "invoice_date": "2025-12-16",
       "due_date": "2026-01-15",
-      "days_outstanding": 87.0,
+      "days_outstanding": 87,
       "expected_payment_date": "2026-04-17",
       "notes": "02/10 - Job ongoing, remediation ongoing."
     },
@@ -167,7 +167,7 @@
       "balance": 5603.28,
       "invoice_date": "2026-01-20",
       "due_date": "2026-02-20",
-      "days_outstanding": 52.0,
+      "days_outstanding": 52,
       "expected_payment_date": "2026-04-10",
       "notes": "02/24 - EPO is attached to Repairs, that are still ongoing"
     },
@@ -179,7 +179,7 @@
       "balance": 1752.0,
       "invoice_date": "2026-01-22",
       "due_date": "2026-02-21",
-      "days_outstanding": 50.0,
+      "days_outstanding": 50,
       "expected_payment_date": "2026-03-20",
       "notes": "03/12 - spoke to Tyler payment is approved but check hadnt been released due to netvendor transition, check should arrive next week"
     },
@@ -191,7 +191,7 @@
       "balance": 4771.43,
       "invoice_date": "2026-02-24",
       "due_date": "2026-03-26",
-      "days_outstanding": 17.0,
+      "days_outstanding": 17,
       "expected_payment_date": "2026-03-27",
       "notes": "03/09 - fully approved"
     },
@@ -203,7 +203,7 @@
       "balance": 622.5,
       "invoice_date": "2026-02-24",
       "due_date": "2026-03-26",
-      "days_outstanding": 17.0,
+      "days_outstanding": 17,
       "expected_payment_date": "2026-03-27",
       "notes": "03/12 - Called and Texted Robert, EPO still pending"
     },
@@ -227,7 +227,7 @@
       "balance": 1800.0,
       "invoice_date": "2026-02-26",
       "due_date": "2026-02-26",
-      "days_outstanding": 15.0,
+      "days_outstanding": 15,
       "expected_payment_date": "2026-03-27",
       "notes": "03/05 - invoiced approved and sent to billing for payment"
     },
@@ -239,7 +239,7 @@
       "balance": 7568.48,
       "invoice_date": "2026-02-27",
       "due_date": "2026-03-29",
-      "days_outstanding": 14.0,
+      "days_outstanding": 14,
       "expected_payment_date": "2026-03-29",
       "notes": "03/12 - email AP requesting receipt confirmation"
     },
@@ -251,7 +251,7 @@
       "balance": 1922.06,
       "invoice_date": "2026-03-03",
       "due_date": "2026-04-02",
-      "days_outstanding": 10.0,
+      "days_outstanding": 10,
       "expected_payment_date": "2026-04-02",
       "notes": "3/12 work ongoing"
     },
@@ -263,7 +263,7 @@
       "balance": 492.8,
       "invoice_date": "2026-03-10",
       "due_date": "2026-03-10",
-      "days_outstanding": 3.0,
+      "days_outstanding": 3,
       "expected_payment_date": "2026-03-13",
       "notes": null
     },
@@ -275,7 +275,7 @@
       "balance": 11665.38,
       "invoice_date": "2026-03-12",
       "due_date": "2026-04-11",
-      "days_outstanding": 1.0,
+      "days_outstanding": 1,
       "expected_payment_date": "2026-04-11",
       "notes": "03/12 - email AP requesting receipt confirmation"
     },
@@ -287,7 +287,7 @@
       "balance": 6936.52,
       "invoice_date": "2026-03-13",
       "due_date": "2026-04-17",
-      "days_outstanding": 0.0,
+      "days_outstanding": 0,
       "expected_payment_date": "2026-04-17",
       "notes": "Invoice not sent yet"
     }
