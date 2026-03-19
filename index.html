@@ -1342,7 +1342,7 @@ async function loadAP() {
         <td class="mono right">${fmt(r.amount)}</td>
         <td class="mono muted">${fmtDate(r.due_date)}</td>
         <td class="mono right ${daysClass}">${days != null ? days + 'd' : '—'}</td>
-        <td><span class="badge ${pClass}">${r.priority || 'Normal'}</span></td>
+        <td style="font-size:12px;color:var(--text-muted);">${r.notes || '—'}</td>
       </tr>`;
     }).join('');
     const total = rows.reduce((s, r) => s + (r.amount || 0), 0);
