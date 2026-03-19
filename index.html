@@ -764,24 +764,21 @@ body {
               &nbsp;&nbsp;Rest: <span id="ap-friday-rest" style="color:var(--green);font-weight:600;">—</span>
               &nbsp;&nbsp;Total: <span id="ap-friday-total" style="font-weight:600;">—</span>
             </div>
-            <button id="ap-friday-lock-btn" onclick="toggleFridayLock()"
-              style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;padding:5px 12px;border-radius:6px;border:none;cursor:pointer;background:var(--accent);color:#fff;">
-              🔓 Edit Mode
-            </button>
+
           </div>
         </div>
         <div class="two-col" style="padding:0 20px 16px;">
           <div>
             <div style="font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:var(--accent);font-weight:500;padding:8px 0 4px;">🔧 Improvement</div>
             <table class="data-table" id="ap-friday-impr-table">
-              <thead><tr><th style="width:32px;text-align:center;">Pay</th><th>Vendor</th><th>Invoice #</th><th style="text-align:right">Amount</th><th>Due Date</th></tr></thead>
+              <thead><tr><th>Vendor</th><th>Invoice #</th><th style="text-align:right">Amount</th><th>Due Date</th></tr></thead>
               <tbody></tbody>
             </table>
           </div>
           <div>
             <div style="font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:var(--green);font-weight:500;padding:8px 0 4px;">🏠 Restoration</div>
             <table class="data-table" id="ap-friday-rest-table">
-              <thead><tr><th style="width:32px;text-align:center;">Pay</th><th>Vendor</th><th>Invoice #</th><th style="text-align:right">Amount</th><th>Due Date</th></tr></thead>
+              <thead><tr><th>Vendor</th><th>Invoice #</th><th style="text-align:right">Amount</th><th>Due Date</th></tr></thead>
               <tbody></tbody>
             </table>
           </div>
@@ -1404,9 +1401,7 @@ async function loadAP() {
     friday.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
 
   const fridayItems = (data || []).filter(r => {
-    if (!r.due_date) return false;
-    const due = new Date(r.due_date + 'T00:00:00');
-    return due <= friday;
+    return r.pay_friday === 'Yes';
   });
 
   const fridayImpr = fridayItems.filter(r => r.division === 'improvement');
@@ -1419,22 +1414,7 @@ async function loadAP() {
   document.getElementById('ap-friday-rest').textContent  = fmt(fridayRestTotal);
   document.getElementById('ap-friday-total').textContent = fmt(fridayImprTotal + fridayRestTotal);
 
-  window.fridayLocked = true; // Start locked — only you can edit
 
-  window.toggleFridayLock = () => {
-    window.fridayLocked = !window.fridayLocked;
-    const btn = document.getElementById('ap-friday-lock-btn');
-    const cbs = document.querySelectorAll('#ap-friday-impr-table tbody input[type=checkbox], #ap-friday-rest-table tbody input[type=checkbox]');
-    if (window.fridayLocked) {
-      btn.textContent = '🔒 Locked';
-      btn.style.background = '#6B6860';
-      cbs.forEach(cb => cb.disabled = true);
-    } else {
-      btn.textContent = '🔓 Edit Mode';
-      btn.style.background = 'var(--accent)';
-      cbs.forEach(cb => cb.disabled = false);
-    }
-  };
 
   const updateFridayTotals = () => {
     let imprTotal = 0, restTotal = 0;
@@ -1454,25 +1434,17 @@ async function loadAP() {
   };
 
   const renderFriday = (rows, tableId) => {
-    if (!rows.length) return '<tr><td colspan="5" class="empty-state">No payments due.</td></tr>';
+    if (!rows.length) return '<tr><td colspan="4" class="empty-state">No invoices marked for payment this Friday.</td></tr>';
     const subtotalId = tableId + '-subtotal';
-    const rowsHtml = rows.map((r,i) => {
-      const cbId = tableId + '-cb-' + i;
-      return `<tr style="cursor:pointer;" onclick="if(!window.fridayLocked){document.getElementById('${cbId}').click()}">
-        <td style="text-align:center;" onclick="event.stopPropagation()">
-          <input type="checkbox" id="${cbId}" data-amount="${r.amount || 0}"
-            style="width:16px;height:16px;cursor:pointer;accent-color:var(--accent);"
-            onchange="updateFridayTotals()" checked disabled>
-        </td>
+    const rowsHtml = rows.map(r => `<tr>
         <td>${r.vendor}</td>
         <td class="mono muted">${r.invoice_number || '—'}</td>
         <td class="mono right">${fmt(r.amount)}</td>
         <td class="mono muted">${fmtDate(r.due_date)}</td>
-      </tr>`;
-    }).join('');
+      </tr>`).join('');
     const total = rows.reduce((s,r)=>s+(r.amount||0),0);
     return rowsHtml + `<tr class="total-row">
-      <td></td><td colspan="2">Selected Total</td>
+      <td colspan="2">Total</td>
       <td class="mono right" id="${subtotalId}">${fmt(total)}</td>
       <td></td></tr>`;
   };
@@ -1480,9 +1452,7 @@ async function loadAP() {
   document.querySelector('#ap-friday-impr-table tbody').innerHTML = renderFriday(fridayImpr, 'ap-friday-impr');
   document.querySelector('#ap-friday-rest-table tbody').innerHTML = renderFriday(fridayRest, 'ap-friday-rest');
   updateFridayTotals();
-  // Apply lock state after render
-  const btn = document.getElementById('ap-friday-lock-btn');
-  if (btn) { btn.textContent = '🔒 Locked'; btn.style.background = '#6B6860'; }
+  updateFridayTotals();
 }
 
 // ── CASH FLOW ─────────────────────────────────────────────────────────────
