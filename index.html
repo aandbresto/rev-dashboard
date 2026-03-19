@@ -785,8 +785,8 @@ body {
         </div>
       </div>
 
-      <div class="two-col">
-        <div class="card">
+      <div>
+        <div class="card mb-24">
           <div class="division-header impr">Improvement — Open Payables</div>
           <table class="data-table" id="ap-impr-table">
             <thead>
@@ -1407,30 +1407,16 @@ async function loadAP() {
   const fridayImpr = fridayItems.filter(r => r.division === 'improvement');
   const fridayRest = fridayItems.filter(r => r.division === 'restoration');
 
-  const fridayImprTotal = fridayImpr.reduce((s,r) => s + (r.amount||0), 0);
-  const fridayRestTotal = fridayRest.reduce((s,r) => s + (r.amount||0), 0);
-
-  document.getElementById('ap-friday-impr').textContent  = fmt(fridayImprTotal);
-  document.getElementById('ap-friday-rest').textContent  = fmt(fridayRestTotal);
-  document.getElementById('ap-friday-total').textContent = fmt(fridayImprTotal + fridayRestTotal);
 
 
 
-  const updateFridayTotals = () => {
-    let imprTotal = 0, restTotal = 0;
-    document.querySelectorAll('#ap-friday-impr-table tbody input[type=checkbox]').forEach(cb => {
-      if (cb.checked) imprTotal += parseFloat(cb.dataset.amount || 0);
-    });
-    document.querySelectorAll('#ap-friday-rest-table tbody input[type=checkbox]').forEach(cb => {
-      if (cb.checked) restTotal += parseFloat(cb.dataset.amount || 0);
-    });
+
+  const updateFridayTotals = (imprRows, restRows) => {
+    const imprTotal = (imprRows||[]).reduce((s,r) => s + (r.amount||0), 0);
+    const restTotal = (restRows||[]).reduce((s,r) => s + (r.amount||0), 0);
     document.getElementById('ap-friday-impr').textContent  = fmt(imprTotal);
     document.getElementById('ap-friday-rest').textContent  = fmt(restTotal);
     document.getElementById('ap-friday-total').textContent = fmt(imprTotal + restTotal);
-    const imprSub = document.getElementById('ap-friday-impr-subtotal');
-    const restSub = document.getElementById('ap-friday-rest-subtotal');
-    if (imprSub) imprSub.textContent = fmt(imprTotal);
-    if (restSub) restSub.textContent = fmt(restTotal);
   };
 
   const renderFriday = (rows, tableId) => {
@@ -1457,8 +1443,7 @@ async function loadAP() {
 
   document.querySelector('#ap-friday-impr-table tbody').innerHTML = renderFriday(fridayImpr, 'ap-friday-impr');
   document.querySelector('#ap-friday-rest-table tbody').innerHTML = renderFriday(fridayRest, 'ap-friday-rest');
-  updateFridayTotals();
-  updateFridayTotals();
+  updateFridayTotals(fridayImpr, fridayRest);
 }
 
 // ── CASH FLOW ─────────────────────────────────────────────────────────────
