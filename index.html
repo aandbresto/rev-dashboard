@@ -756,12 +756,18 @@ body {
 
       <!-- Friday Payments Due -->
       <div class="card mb-24">
-        <div class="card-header" style="display:flex;justify-content:space-between;align-items:center;">
+        <div class="card-header" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
           <div class="card-title">📅 Payments Due This Friday — <span id="ap-friday-date">—</span></div>
-          <div style="font-family:'DM Mono',monospace;font-size:13px;color:var(--text-muted);">
-            Impr: <span id="ap-friday-impr" style="color:var(--accent);font-weight:600;">—</span>
-            &nbsp;&nbsp;Rest: <span id="ap-friday-rest" style="color:var(--green);font-weight:600;">—</span>
-            &nbsp;&nbsp;Total: <span id="ap-friday-total" style="font-weight:600;">—</span>
+          <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+            <div style="font-family:'DM Mono',monospace;font-size:13px;color:var(--text-muted);">
+              Impr: <span id="ap-friday-impr" style="color:var(--accent);font-weight:600;">—</span>
+              &nbsp;&nbsp;Rest: <span id="ap-friday-rest" style="color:var(--green);font-weight:600;">—</span>
+              &nbsp;&nbsp;Total: <span id="ap-friday-total" style="font-weight:600;">—</span>
+            </div>
+            <button id="ap-friday-lock-btn" onclick="toggleFridayLock()"
+              style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;padding:5px 12px;border-radius:6px;border:none;cursor:pointer;background:var(--accent);color:#fff;">
+              🔓 Edit Mode
+            </button>
           </div>
         </div>
         <div class="two-col" style="padding:0 20px 16px;">
@@ -1413,6 +1419,23 @@ async function loadAP() {
   document.getElementById('ap-friday-rest').textContent  = fmt(fridayRestTotal);
   document.getElementById('ap-friday-total').textContent = fmt(fridayImprTotal + fridayRestTotal);
 
+  window.fridayLocked = true; // Start locked — only you can edit
+
+  window.toggleFridayLock = () => {
+    window.fridayLocked = !window.fridayLocked;
+    const btn = document.getElementById('ap-friday-lock-btn');
+    const cbs = document.querySelectorAll('#ap-friday-impr-table tbody input[type=checkbox], #ap-friday-rest-table tbody input[type=checkbox]');
+    if (window.fridayLocked) {
+      btn.textContent = '🔒 Locked';
+      btn.style.background = '#6B6860';
+      cbs.forEach(cb => cb.disabled = true);
+    } else {
+      btn.textContent = '🔓 Edit Mode';
+      btn.style.background = 'var(--accent)';
+      cbs.forEach(cb => cb.disabled = false);
+    }
+  };
+
   const updateFridayTotals = () => {
     let imprTotal = 0, restTotal = 0;
     document.querySelectorAll('#ap-friday-impr-table tbody input[type=checkbox]').forEach(cb => {
@@ -1435,11 +1458,11 @@ async function loadAP() {
     const subtotalId = tableId + '-subtotal';
     const rowsHtml = rows.map((r,i) => {
       const cbId = tableId + '-cb-' + i;
-      return `<tr style="cursor:pointer;" onclick="document.getElementById('${cbId}').click()">
+      return `<tr style="cursor:pointer;" onclick="if(!window.fridayLocked){document.getElementById('${cbId}').click()}">
         <td style="text-align:center;" onclick="event.stopPropagation()">
           <input type="checkbox" id="${cbId}" data-amount="${r.amount || 0}"
             style="width:16px;height:16px;cursor:pointer;accent-color:var(--accent);"
-            onchange="updateFridayTotals()" checked>
+            onchange="updateFridayTotals()" checked disabled>
         </td>
         <td>${r.vendor}</td>
         <td class="mono muted">${r.invoice_number || '—'}</td>
@@ -1457,6 +1480,9 @@ async function loadAP() {
   document.querySelector('#ap-friday-impr-table tbody').innerHTML = renderFriday(fridayImpr, 'ap-friday-impr');
   document.querySelector('#ap-friday-rest-table tbody').innerHTML = renderFriday(fridayRest, 'ap-friday-rest');
   updateFridayTotals();
+  // Apply lock state after render
+  const btn = document.getElementById('ap-friday-lock-btn');
+  if (btn) { btn.textContent = '🔒 Locked'; btn.style.background = '#6B6860'; }
 }
 
 // ── CASH FLOW ─────────────────────────────────────────────────────────────
