@@ -754,6 +754,34 @@ body {
         </div>
       </div>
 
+      <!-- Friday Payments Due -->
+      <div class="card mb-24">
+        <div class="card-header" style="display:flex;justify-content:space-between;align-items:center;">
+          <div class="card-title">📅 Payments Due This Friday — <span id="ap-friday-date">—</span></div>
+          <div style="font-family:'DM Mono',monospace;font-size:13px;color:var(--text-muted);">
+            Impr: <span id="ap-friday-impr" style="color:var(--accent);font-weight:600;">—</span>
+            &nbsp;&nbsp;Rest: <span id="ap-friday-rest" style="color:var(--green);font-weight:600;">—</span>
+            &nbsp;&nbsp;Total: <span id="ap-friday-total" style="font-weight:600;">—</span>
+          </div>
+        </div>
+        <div class="two-col" style="padding:0 20px 16px;">
+          <div>
+            <div style="font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:var(--accent);font-weight:500;padding:8px 0 4px;">🔧 Improvement</div>
+            <table class="data-table" id="ap-friday-impr-table">
+              <thead><tr><th>Vendor</th><th>Invoice #</th><th style="text-align:right">Amount</th><th>Due Date</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div>
+            <div style="font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:var(--green);font-weight:500;padding:8px 0 4px;">🏠 Restoration</div>
+            <table class="data-table" id="ap-friday-rest-table">
+              <thead><tr><th>Vendor</th><th>Invoice #</th><th style="text-align:right">Amount</th><th>Due Date</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
       <div class="two-col">
         <div class="card">
           <div class="division-header impr">Improvement — Open Payables</div>
@@ -1359,6 +1387,47 @@ async function loadAP() {
 
   document.querySelector('#ap-impr-table tbody').innerHTML = renderAP(impr);
   document.querySelector('#ap-rest-table tbody').innerHTML = renderAP(rest);
+
+  // ── FRIDAY PAYMENTS DUE ─────────────────────────────────────────────────
+  const today = new Date(); today.setHours(0,0,0,0);
+  const dayOfWeek = today.getDay(); // 0=Sun, 5=Fri
+  const daysUntilFriday = (5 - dayOfWeek + 7) % 7 || 7; // if today is Friday, show next Friday
+  const friday = new Date(today); friday.setDate(today.getDate() + daysUntilFriday);
+
+  document.getElementById('ap-friday-date').textContent =
+    friday.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+
+  const fridayItems = (data || []).filter(r => {
+    if (!r.due_date) return false;
+    const due = new Date(r.due_date + 'T00:00:00');
+    return due <= friday;
+  });
+
+  const fridayImpr = fridayItems.filter(r => r.division === 'improvement');
+  const fridayRest = fridayItems.filter(r => r.division === 'restoration');
+
+  const fridayImprTotal = fridayImpr.reduce((s,r) => s + (r.amount||0), 0);
+  const fridayRestTotal = fridayRest.reduce((s,r) => s + (r.amount||0), 0);
+
+  document.getElementById('ap-friday-impr').textContent  = fmt(fridayImprTotal);
+  document.getElementById('ap-friday-rest').textContent  = fmt(fridayRestTotal);
+  document.getElementById('ap-friday-total').textContent = fmt(fridayImprTotal + fridayRestTotal);
+
+  const renderFriday = (rows) => {
+    if (!rows.length) return '<tr><td colspan="4" class="empty-state">No payments due.</td></tr>';
+    return rows.map(r => `<tr>
+      <td>${r.vendor}</td>
+      <td class="mono muted">${r.invoice_number || '—'}</td>
+      <td class="mono right">${fmt(r.amount)}</td>
+      <td class="mono muted">${fmtDate(r.due_date)}</td>
+    </tr>`).join('') + `<tr class="total-row">
+      <td colspan="2">Total</td>
+      <td class="mono right">${fmt(rows.reduce((s,r)=>s+(r.amount||0),0))}</td>
+      <td></td></tr>`;
+  };
+
+  document.querySelector('#ap-friday-impr-table tbody').innerHTML = renderFriday(fridayImpr);
+  document.querySelector('#ap-friday-rest-table tbody').innerHTML = renderFriday(fridayRest);
 }
 
 // ── CASH FLOW ─────────────────────────────────────────────────────────────
