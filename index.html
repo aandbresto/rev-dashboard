@@ -645,13 +645,13 @@ body {
             <div style="width:1px;height:20px;background:var(--border);margin:0 4px;"></div>
             <span style="font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:var(--accent);font-weight:500;">Improvement</span>
             <div class="filter-chip" onclick="filterTxn('cap_one_construction',this)" data-filter="cap_one_construction">Cap One</div>
-            <div class="filter-chip" onclick="filterTxn('checking_2657',this)" data-filter="checking_2657">Checking 2657</div>
-            <div class="filter-chip" onclick="filterTxn('mm_2690',this)" data-filter="mm_2690">MM 2690</div>
+            <div class="filter-chip" onclick="filterTxn('checking_2657',this)" data-filter="checking_2657">Constr 2657</div>
+  mm_2690:              'Construction – MM 2690',
             <div style="width:1px;height:20px;background:var(--border);margin:0 4px;"></div>
             <span style="font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:var(--green);font-weight:500;">Restoration</span>
             <div class="filter-chip" onclick="filterTxn('cap_one_restoration',this)" data-filter="cap_one_restoration">Cap One</div>
-            <div class="filter-chip" onclick="filterTxn('checking_7363',this)" data-filter="checking_7363">Checking 7363</div>
-            <div class="filter-chip" onclick="filterTxn('mm_2798',this)" data-filter="mm_2798">MM 2798</div>
+            <div class="filter-chip" onclick="filterTxn('checking_7363',this)" data-filter="checking_7363">Rest 7363</div>
+  mm_2798:              'Restoration – MM 2798',
           </div>
         </div>
         <table class="data-table" id="txn-table">
@@ -837,7 +837,7 @@ body {
             <button class="filter-chip" id="cf-btn-7"  onclick="setCFDays(7,this)">7d</button>
             <button class="filter-chip" id="cf-btn-15" onclick="setCFDays(15,this)">15d</button>
             <button class="filter-chip active" id="cf-btn-30" onclick="setCFDays(30,this)">30d</button>
-            <button class="filter-chip" id="cf-btn-90" onclick="setCFDays(90,this)">90d</button>
+            <button class="filter-chip" id="cf-btn-90" onclick="setCFDays(45,this)">45d</button>
           </div>
         </div>
       </div>
@@ -1278,10 +1278,10 @@ const accountLabels = {
   cap_one_construction: 'Cap One – Construction',
 
   cap_one_restoration:  'Cap One – Restoration',
-  checking_2657:        'Checking 2657',
-  mm_2690:              'MM 2690',
-  mm_2798:              'MM 2798',
-  checking_7363:        'Checking 7363',
+  checking_2657:        'Construction – 2657',
+  mm_2690:              'Construction – MM 2690',
+  mm_2798:              'Restoration – MM 2798',
+  checking_7363:        'Restoration – 7363',
 
 };
 
@@ -1517,9 +1517,9 @@ function getUpcomingExpenses(withinDays, division) {
 // Last paid dates — update only if schedule permanently changes
 // Est. amounts — update when payroll changes significantly
 const PAYROLL_SCHEDULES = [
-  { label: 'Improvement Payroll',  lastPaid: '2026-03-06', division: 'improvement', estAmount: 0 },
-  { label: 'Admin Payroll',        lastPaid: '2026-03-06', division: 'admin',        estAmount: 0 },
-  { label: 'Restoration Payroll',  lastPaid: '2026-03-13', division: 'restoration',  estAmount: 0 },
+  { label: 'Improvement Payroll',  lastPaid: '2026-03-06', division: 'improvement', estAmount: 1658.70 },
+  { label: 'Admin Payroll',        lastPaid: '2026-03-06', division: 'admin',        estAmount: 3119.00 },
+  { label: 'Restoration Payroll',  lastPaid: '2026-03-13', division: 'restoration',  estAmount: 15500.00 },
 ];
 
 function getUpcomingPayrolls(withinDays) {
