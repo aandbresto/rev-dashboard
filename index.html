@@ -1603,7 +1603,7 @@ async function loadCashFlow() {
   };
 
   const renderAPRows = (rows) => {
-    const withDates = rows.filter(r => r.due_date);
+    const withDates = rows.filter(r => r.due_date && r.due_date >= '2026-01-01');
     if (!withDates.length) return '<tr><td colspan="4" class="empty-state">No upcoming due dates.</td></tr>';
     return withDates.map(r => {
       const d = new Date(r.due_date + 'T00:00:00');
@@ -1649,9 +1649,10 @@ async function loadCashFlow() {
       return d >= today && d <= in30;
     }).reduce((s,r) => s + (r.balance||0), 0);
 
+    const cutoffStart = new Date('2026-01-01T00:00:00');
     const ap30 = apRows.filter(r => r.due_date).filter(r => {
       const d = new Date(r.due_date + 'T00:00:00');
-      return d >= today && d <= in30;
+      return d >= cutoffStart && d <= in30;
     }).reduce((s,r) => s + (r.amount||0), 0);
 
     const cash = snap ? (div === 'impr' ? snap.impr_cash : snap.rest_cash) : 0;
