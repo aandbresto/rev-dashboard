@@ -848,7 +848,8 @@ body {
 
       <!-- IMPROVEMENT -->
       <div class="division-header impr" style="border-radius:6px 6px 0 0;margin-bottom:0;">🔧 Improvement Division</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:12px;margin-bottom:4px;background:var(--surface);border:1px solid var(--border);border-top:none;padding:16px;border-radius:0 0 6px 6px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr;gap:12px;margin-bottom:4px;background:var(--surface);border:1px solid var(--border);border-top:none;padding:16px;border-radius:0 0 6px 6px;">
+        <div><div class="kpi-label">Cash in Bank</div><div style="font-family:'DM Mono',monospace;font-size:18px;margin-top:6px;color:var(--accent)" id="cf-impr-cash">—</div></div>
         <div><div class="kpi-label">AR Expected (Next <span class="cf-days-label">30</span>d)</div><div style="font-family:'DM Mono',monospace;font-size:18px;margin-top:6px;color:var(--green)" id="cf-impr-ar-30">—</div></div>
         <div><div class="kpi-label">AP Due (Next <span class="cf-days-label">30</span>d)</div><div style="font-family:'DM Mono',monospace;font-size:18px;margin-top:6px;color:var(--red)" id="cf-impr-ap-30">—</div></div>
         <div><div class="kpi-label">Biz Expenses Due</div><div style="font-family:'DM Mono',monospace;font-size:18px;margin-top:6px;color:var(--amber)" id="cf-impr-biz-30">—</div></div>
@@ -897,7 +898,8 @@ body {
 
       <!-- RESTORATION -->
       <div class="division-header rest" style="border-radius:6px 6px 0 0;margin-bottom:0;">🏠 Restoration Division</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:12px;margin-bottom:4px;background:var(--surface);border:1px solid var(--border);border-top:none;padding:16px;border-radius:0 0 6px 6px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr;gap:12px;margin-bottom:4px;background:var(--surface);border:1px solid var(--border);border-top:none;padding:16px;border-radius:0 0 6px 6px;">
+        <div><div class="kpi-label">Cash in Bank</div><div style="font-family:'DM Mono',monospace;font-size:18px;margin-top:6px;color:var(--accent)" id="cf-rest-cash">—</div></div>
         <div><div class="kpi-label">AR Expected (Next <span class="cf-days-label">30</span>d)</div><div style="font-family:'DM Mono',monospace;font-size:18px;margin-top:6px;color:var(--green)" id="cf-rest-ar-30">—</div></div>
         <div><div class="kpi-label">AP Due (Next <span class="cf-days-label">30</span>d)</div><div style="font-family:'DM Mono',monospace;font-size:18px;margin-top:6px;color:var(--red)" id="cf-rest-ap-30">—</div></div>
         <div><div class="kpi-label">Biz Expenses Due</div><div style="font-family:'DM Mono',monospace;font-size:18px;margin-top:6px;color:var(--amber)" id="cf-rest-biz-30">—</div></div>
@@ -1656,6 +1658,8 @@ async function loadCashFlow() {
     }).reduce((s,r) => s + (r.amount||0), 0);
 
     const cash = snap ? (div === 'impr' ? snap.impr_cash : snap.rest_cash) : 0;
+    const cashEl = document.getElementById(`cf-${div}-cash`);
+    if (cashEl) cashEl.textContent = fmt(cash || 0);
     const payrollCost = getUpcomingPayrolls(cfDays)
       .filter(p => p.division === divFull)
       .reduce((s,p) => s + (p.estAmount || 0), 0);
