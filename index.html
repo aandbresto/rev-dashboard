@@ -1454,6 +1454,7 @@ async function loadAP() {
     const date = document.getElementById('ap-date').value;
     const { data: approvalData, error: approvalError } = await db.from('payment_approvals')
       .select('*').eq('report_date', date);
+    console.log('Loaded approvals:', approvalData, 'error:', approvalError);
     if (!approvalError && approvalData && approvalData.length > 0) {
       approvalData.forEach(a => {
         fridayApprovals[a.vendor + '_' + (a.invoice_number||'')] = a;
@@ -1465,21 +1466,24 @@ async function loadAP() {
     const key = vendor + '_' + (invoiceNum||'');
     try {
       // Delete existing then insert fresh
-      await db.from('payment_approvals')
+      const delResult = await db.from('payment_approvals')
         .delete()
         .eq('report_date', date)
         .eq('vendor', vendor)
         .eq('invoice_number', invoiceNum || '');
+      console.log('Delete result:', delResult);
       if (status) {
-        await db.from('payment_approvals').insert({
+        const insResult = await db.from('payment_approvals').insert({
           report_date: date, vendor, invoice_number: invoiceNum || '',
           division, status, comment: comment || '',
           updated_at: new Date().toISOString()
         });
+        console.log('Insert result:', insResult);
       }
       fridayApprovals[key] = { status, comment };
       const row = document.getElementById('friday-row-' + CSS.escape(key));
       if (row) updateApprovalRowUI(row, status, comment);
+      console.log('Saved approval:', { vendor, invoiceNum, status, comment, date });
     } catch(e) { console.error('Approval save failed:', e); }
   };
 
