@@ -1452,23 +1452,32 @@ async function loadAP() {
   let fridayApprovals = {};
   try {
     const date = document.getElementById('ap-date').value;
-    const { data: approvalData } = await db.from('payment_approvals')
+    const { data: approvalData, error: approvalError } = await db.from('payment_approvals')
       .select('*').eq('report_date', date);
-    if (approvalData) {
-      approvalData.forEach(a => { fridayApprovals[a.vendor + '_' + (a.invoice_number||'')] = a; });
+    if (!approvalError && approvalData && approvalData.length > 0) {
+      approvalData.forEach(a => {
+        fridayApprovals[a.vendor + '_' + (a.invoice_number||'')] = a;
+      });
     }
-  } catch(e) {}
+  } catch(e) { console.error('Load approvals failed:', e); }
 
   const saveFridayApproval = async (vendor, invoiceNum, division, status, comment, date) => {
     const key = vendor + '_' + (invoiceNum||'');
     try {
-      await db.from('payment_approvals').upsert({
-        report_date: date, vendor, invoice_number: invoiceNum,
-        division, status, comment,
-        updated_at: new Date().toISOString()
-      }, { onConflict: 'vendor,invoice_number,report_date' });
+      // Delete existing then insert fresh
+      await db.from('payment_approvals')
+        .delete()
+        .eq('report_date', date)
+        .eq('vendor', vendor)
+        .eq('invoice_number', invoiceNum || '');
+      if (status) {
+        await db.from('payment_approvals').insert({
+          report_date: date, vendor, invoice_number: invoiceNum || '',
+          division, status, comment: comment || '',
+          updated_at: new Date().toISOString()
+        });
+      }
       fridayApprovals[key] = { status, comment };
-      // Update row UI
       const row = document.getElementById('friday-row-' + CSS.escape(key));
       if (row) updateApprovalRowUI(row, status, comment);
     } catch(e) { console.error('Approval save failed:', e); }
