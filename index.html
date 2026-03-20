@@ -1795,23 +1795,21 @@ window.addEventListener('DOMContentLoaded', () => {
 async function loadBrief(date) {
   const briefBody = document.getElementById('cfo-brief-body');
   const briefDate = document.getElementById('cfo-brief-date');
-  const btn = document.getElementById('cfo-brief-btn');
   if (!briefBody) return;
 
   briefDate.textContent = 'For ' + new Date(date + 'T00:00:00').toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric', year:'numeric' });
+  briefBody.innerHTML = '<div style="color:var(--text-muted);font-size:13px;">Loading...</div>';
 
-  // Check if brief already exists in Supabase
   try {
-    const { data } = await db.from('daily_briefs').select('brief').eq('report_date', date).single();
+    const { data, error } = await db.from('daily_briefs').select('brief').eq('report_date', date).single();
     if (data && data.brief) {
       renderBrief(data.brief);
-      btn.textContent = 'Regenerate';
-      return;
+    } else {
+      briefBody.innerHTML = '<div style="color:var(--text-muted);font-size:13px;">No brief available for this date yet. Brief will appear after your morning upload.</div>';
     }
-  } catch(e) {}
-
-  briefBody.innerHTML = '<div style="color:var(--text-muted);font-size:13px;">Click "Generate Brief" to get AI-powered financial recommendations for this date.</div>';
-  btn.textContent = 'Generate Brief';
+  } catch(e) {
+    briefBody.innerHTML = '<div style="color:var(--text-muted);font-size:13px;">No brief available for this date yet.</div>';
+  }
 }
 
 
