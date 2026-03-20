@@ -646,12 +646,12 @@ body {
             <span style="font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:var(--accent);font-weight:500;">Improvement</span>
             <div class="filter-chip" onclick="filterTxn('cap_one_construction',this)" data-filter="cap_one_construction">Cap One</div>
             <div class="filter-chip" onclick="filterTxn('checking_2657',this)" data-filter="checking_2657">Constr 2657</div>
-  mm_2690:              'Construction – MM 2690',
+            <div class="filter-chip" onclick="filterTxn('mm_2690',this)" data-filter="mm_2690">Constr MM 2690</div>
             <div style="width:1px;height:20px;background:var(--border);margin:0 4px;"></div>
             <span style="font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:var(--green);font-weight:500;">Restoration</span>
             <div class="filter-chip" onclick="filterTxn('cap_one_restoration',this)" data-filter="cap_one_restoration">Cap One</div>
             <div class="filter-chip" onclick="filterTxn('checking_7363',this)" data-filter="checking_7363">Rest 7363</div>
-  mm_2798:              'Restoration – MM 2798',
+            <div class="filter-chip" onclick="filterTxn('mm_2798',this)" data-filter="mm_2798">Rest MM 2798</div>
           </div>
         </div>
         <table class="data-table" id="txn-table">
@@ -1254,11 +1254,12 @@ async function loadTransactions() {
   allTransactions = data || [];
   renderTransactions();
 
-  // Summaries
-  const total = allTransactions.reduce((s, t) => s + (t.amount || 0), 0);
-  const cc    = allTransactions.filter(t => t.account_type === 'credit_card')
+  // Summaries — Debits only, Credits excluded
+  const debits = allTransactions.filter(t => t.txn_type !== 'Credit');
+  const total  = debits.reduce((s, t) => s + (t.amount || 0), 0);
+  const cc     = debits.filter(t => t.account_type === 'credit_card')
     .reduce((s, t) => s + (t.amount || 0), 0);
-  const bank  = allTransactions.filter(t => t.account_type === 'bank')
+  const bank   = debits.filter(t => t.account_type === 'bank')
     .reduce((s, t) => s + (t.amount || 0), 0);
 
   document.getElementById('txn-total').textContent  = fmt(total);
@@ -1618,7 +1619,7 @@ async function loadCashFlow() {
       const cls = p.days <= 3 ? 'flow-negative' : '';
       return `<tr>
         <td>${p.label}</td>
-        <td class="mono right" style="color:var(--amber)">${p.estAmount ? fmt(p.estAmount) : '—'} <span style="font-size:10px;color:var(--text-muted)">(est.)</span></td>
+        <td class="mono right" style="color:var(--amber)">${p.estAmount != null && p.estAmount > 0 ? fmt(p.estAmount) : '—'} <span style="font-size:10px;color:var(--text-muted)">(est.)</span></td>
         <td class="mono muted">${fmtDate(p.date)}</td>
         <td class="mono right ${cls}">${p.days === 0 ? 'Today' : p.days + 'd'}</td>
       </tr>`;
@@ -1686,8 +1687,8 @@ async function loadCashFlow() {
     const payrolls = getUpcomingPayrolls(cfDays).filter(p => p.division === divFull);
     const payrollEl = document.getElementById(`cf-${div}-payroll`);
     if (payrolls.length > 0) {
-      const next = payrolls[0];
-      payrollEl.textContent = next.days === 0 ? 'Today' : next.days + 'd — ' + fmtDate(next.date);
+      const totalPayroll = payrolls.reduce((s,p) => s + (p.estAmount || 0), 0);
+      payrollEl.textContent = fmt(totalPayroll);
     } else {
       payrollEl.textContent = 'None in window';
     }
@@ -1700,7 +1701,7 @@ async function loadCashFlow() {
         const cls = p.days <= 3 ? 'flow-negative' : '';
         return `<tr>
           <td>${p.label}</td>
-          <td class="mono right" style="color:var(--amber)">${p.estAmount ? fmt(p.estAmount) : '—'} <span style="font-size:10px;color:var(--text-muted)">(est.)</span></td>
+          <td class="mono right" style="color:var(--amber)">${p.estAmount != null && p.estAmount > 0 ? fmt(p.estAmount) : '—'} <span style="font-size:10px;color:var(--text-muted)">(est.)</span></td>
           <td class="mono muted">${fmtDate(p.date)}</td>
           <td class="mono right ${cls}">${p.days === 0 ? 'Today' : p.days + 'd'}</td>
         </tr>`;
