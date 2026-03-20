@@ -632,6 +632,14 @@ body {
             <div style="font-family:'DM Mono',monospace;font-size:20px;margin-top:6px;" id="txn-bank">—</div>
           </div>
           <div>
+            <div class="kpi-label">Credits In</div>
+            <div style="font-family:'DM Mono',monospace;font-size:20px;margin-top:6px;color:var(--green);" id="txn-credits">—</div>
+          </div>
+          <div>
+            <div class="kpi-label">Credits In</div>
+            <div style="font-family:'DM Mono',monospace;font-size:20px;margin-top:6px;color:var(--green);" id="txn-credits">—</div>
+          </div>
+          <div>
             <div class="kpi-label">Transaction Count</div>
             <div style="font-family:'DM Mono',monospace;font-size:20px;margin-top:6px;" id="txn-count">—</div>
           </div>
@@ -1254,18 +1262,21 @@ async function loadTransactions() {
   allTransactions = data || [];
   renderTransactions();
 
-  // Summaries — Debits only, Credits excluded
-  const debits = allTransactions.filter(t => t.txn_type !== 'Credit');
-  const total  = debits.reduce((s, t) => s + (t.amount || 0), 0);
-  const cc     = debits.filter(t => t.account_type === 'credit_card')
+  // Summaries — Debits only for out totals, Credits shown separately
+  const debits  = allTransactions.filter(t => t.txn_type !== 'Credit');
+  const credits = allTransactions.filter(t => t.txn_type === 'Credit');
+  const total   = debits.reduce((s, t) => s + (t.amount || 0), 0);
+  const cc      = debits.filter(t => t.account_type === 'credit_card')
     .reduce((s, t) => s + (t.amount || 0), 0);
-  const bank   = debits.filter(t => t.account_type === 'bank')
+  const bank    = debits.filter(t => t.account_type === 'bank')
     .reduce((s, t) => s + (t.amount || 0), 0);
+  const creditsTotal = credits.reduce((s, t) => s + (t.amount || 0), 0);
 
-  document.getElementById('txn-total').textContent  = fmt(total);
-  document.getElementById('txn-cc').textContent     = fmt(cc);
-  document.getElementById('txn-bank').textContent   = fmt(bank);
-  document.getElementById('txn-count').textContent  = allTransactions.length;
+  document.getElementById('txn-total').textContent   = fmt(total);
+  document.getElementById('txn-cc').textContent      = fmt(cc);
+  document.getElementById('txn-bank').textContent    = fmt(bank);
+  document.getElementById('txn-credits').textContent = fmt(creditsTotal);
+  document.getElementById('txn-count').textContent   = allTransactions.length;
 }
 
 function filterTxn(filter, el) {
@@ -1296,17 +1307,21 @@ function renderTransactions() {
     tbody.innerHTML = `<tr><td colspan="6" class="empty-state">No transactions for this selection.</td></tr>`;
     return;
   }
-  tbody.innerHTML = filtered.map(t => `
-    <tr>
+  tbody.innerHTML = filtered.map(t => {
+    const isCredit  = t.txn_type === 'Credit';
+    const rowBg     = isCredit ? 'background:rgba(34,197,94,0.06);' : '';
+    const amtColor  = isCredit ? 'color:var(--green);font-weight:600;' : 'color:var(--red);font-weight:600;';
+    const amtPrefix = isCredit ? '+' : '-';
+    return `<tr style="${rowBg}">
       <td class="mono muted">${fmtDate(t.trans_date)}</td>
       <td><span class="badge ${t.account_type==='credit_card'?'amber':'blue'}">
         ${accountLabels[t.account] || t.account}</span></td>
       <td>${t.vendor || '—'}</td>
-      <td class="mono right">${fmt(t.amount)}</td>
+      <td class="mono right" style="${amtColor}">${amtPrefix}${fmt(t.amount)}</td>
       <td class="muted">${t.explanation || '—'}</td>
       <td class="muted">${t.approved_by || '—'}</td>
-    </tr>
-  `).join('');
+    </tr>`;
+  }).join('');
 }
 
 // ── AR ────────────────────────────────────────────────────────────────────
