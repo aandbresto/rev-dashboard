@@ -1333,11 +1333,12 @@ function renderTransactions() {
     tbody.innerHTML = `<tr><td colspan="6" class="empty-state">No transactions for this selection.</td></tr>`;
     return;
   }
-  tbody.innerHTML = filtered.filter(t => t.txn_type?.toLowerCase() !== 'transfer').map(t => {
-    const isCredit  = t.txn_type?.toLowerCase() === 'credit';
-    const rowBg     = isCredit ? 'background:rgba(34,197,94,0.06);' : '';
-    const amtColor  = isCredit ? 'color:var(--green);font-weight:600;' : 'color:var(--red);font-weight:600;';
-    const amtPrefix = isCredit ? '+' : '-';
+  tbody.innerHTML = filtered.map(t => {
+    const isTransfer = t.txn_type?.toLowerCase() === 'transfer';
+    const isCredit   = t.txn_type?.toLowerCase() === 'credit';
+    const rowBg     = isTransfer ? 'background:rgba(107,104,96,0.06);' : isCredit ? 'background:rgba(34,197,94,0.06);' : '';
+    const amtColor  = isTransfer ? 'color:var(--text-muted);font-style:italic;' : isCredit ? 'color:var(--green);font-weight:600;' : 'color:var(--red);font-weight:600;';
+    const amtPrefix = isTransfer ? '↔' : isCredit ? '+' : '-';
     return `<tr style="${rowBg}">
       <td class="mono muted">${fmtDate(t.trans_date)}</td>
       <td><span class="badge ${t.account_type==='credit_card'?'amber':'blue'}">
