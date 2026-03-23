@@ -18,33 +18,29 @@ print(f"Pushing data for {report_date}...")
 
 # Clear existing data for this date
 for table in ["daily_snapshots", "ar_items", "ap_items", "transactions"]:
-    db.table(table).delete().eq("report_date", report_date).execute()
-    print(f"  Cleared {table}")
+    result = db.table(table).delete().eq("report_date", report_date).execute()
+    print(f"  Cleared {table}: {result}")
 
 def safe_insert(table, rows):
     if not rows:
+        print(f"  No rows to insert into {table}")
         return 0
+    print(f"  Attempting to insert {len(rows)} rows into {table}...")
     try:
-        db.table(table).insert(rows).execute()
+        result = db.table(table).insert(rows).execute()
+        print(f"  ✓ Inserted {len(rows)} rows into {table}: {result}")
         return len(rows)
     except Exception as e:
-        print(f"  ⚠ Batch insert failed for {table}: {str(e)[:200]}")
+        print(f"  ✗ Batch insert FAILED for {table}: {e}")
         success = 0
         for row in rows:
             try:
                 db.table(table).insert(row).execute()
                 success += 1
             except Exception as row_err:
-                print(f"    Skipped row: {str(row_err)[:120]}")
+                print(f"    Skipped row: {row_err}")
+        print(f"  Row-by-row: {success}/{len(rows)} succeeded")
         return success
-
-def get_account_type(account):
-    if not account:
-        return None
-    a = account.lower()
-    if "capital one" in a or "cap one" in a:
-        return "credit_card"
-    return "bank"
 
 # ── Snapshot ──────────────────────────────────────────────────────────────────
 cash = payload["cash_position"]
@@ -80,8 +76,8 @@ snapshot = {
 }
 
 try:
-    db.table("daily_snapshots").insert(snapshot).execute()
-    print(f"  ✓ Snapshot")
+    result = db.table("daily_snapshots").insert(snapshot).execute()
+    print(f"  ✓ Snapshot: {result}")
 except Exception as e:
     print(f"  ✗ Snapshot failed: {e}")
     sys.exit(1)
@@ -127,24 +123,21 @@ count = safe_insert("ap_items", ap_rows)
 print(f"  ✓ {count} AP items")
 
 # ── Transactions ──────────────────────────────────────────────────────────────
-# Store full account name so dashboard filter chips work with existing index.html
-# account_type added so CC vs bank summary split works correctly
 txn_rows = []
 for row in payload.get("transactions", []):
     account = row.get("account")
     txn_rows.append({
-        "report_date":  report_date,
-        "trans_date":   row.get("trans_date"),
-        "posted_date":  row.get("posted_date"),
-        "card_desc":    row.get("card_desc"),
-        "vendor":       row.get("vendor"),
-        "amount":       row.get("amount"),
-        "explanation":  row.get("explanation"),
-        "approved_by":  row.get("approved_by"),
-        "txn_type":     row.get("txn_type"),
-        "account":      account,           # full name e.g. "Restoration Checking – 7363"
-        "account_type": get_account_type(account),  # "credit_card" or "bank"
-        "division":     row.get("division"),
+        "report_date": report_date,
+        "trans_date":  row.get("trans_date"),
+        "posted_date": row.get("posted_date"),
+        "card_desc":   row.get("card_desc"),
+        "vendor":      row.get("vendor"),
+        "amount":      row.get("amount"),
+        "explanation": row.get("explanation"),
+        "approved_by": row.get("approved_by"),
+        "txn_type":    row.get("txn_type"),
+        "account":     account,
+        "division":    row.get("division"),
     })
 
 count = safe_insert("transactions", txn_rows)
