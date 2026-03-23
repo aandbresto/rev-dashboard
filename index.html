@@ -1302,7 +1302,7 @@ async function loadTransactions() {
   document.getElementById('txn-cc').textContent      = fmt(cc);
   document.getElementById('txn-bank').textContent    = fmt(bank);
   document.getElementById('txn-credits').textContent = fmt(creditsTotal);
-  document.getElementById('txn-count').textContent   = allTransactions.length;
+  document.getElementById('txn-count').textContent   = nonTransfers.length;
 }
 
 function filterTxn(filter, el) {
@@ -1333,8 +1333,8 @@ function renderTransactions() {
     tbody.innerHTML = `<tr><td colspan="6" class="empty-state">No transactions for this selection.</td></tr>`;
     return;
   }
-  tbody.innerHTML = filtered.map(t => {
-    const isCredit  = t.txn_type === 'Credit';
+  tbody.innerHTML = filtered.filter(t => t.txn_type?.toLowerCase() !== 'transfer').map(t => {
+    const isCredit  = t.txn_type?.toLowerCase() === 'credit';
     const rowBg     = isCredit ? 'background:rgba(34,197,94,0.06);' : '';
     const amtColor  = isCredit ? 'color:var(--green);font-weight:600;' : 'color:var(--red);font-weight:600;';
     const amtPrefix = isCredit ? '+' : '-';
