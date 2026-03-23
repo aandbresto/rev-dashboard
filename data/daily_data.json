@@ -909,5 +909,5 @@
     }
   ],
   "brief": "[{\"icon\": \"\\ud83d\\udcb0\", \"category\": \"Cash Position\", \"message\": \"Net Cash Availability is $28,617.63. Total cash is $95,908.63 \\u2014 up from last week reflecting recent client payments.\"}, {\"icon\": \"\\ud83d\\udce5\", \"category\": \"Accounts Receivable\", \"message\": \"Total AR is $78,249.13 \\u2014 down from $107K last week as collections are coming in. Keep following up on outstanding Restoration invoices.\"}, {\"icon\": \"\\ud83d\\udce4\", \"category\": \"Accounts Payable\", \"message\": \"Total AP is $76,356.45. With 4 invoices marked for Friday payment, review the Payables tab for approval before processing this week's run.\"}, {\"icon\": \"\\u26a0\\ufe0f\", \"category\": \"Credit Utilization \\u2014 Action Needed\", \"message\": \"Restoration Cap One is at 96.6% utilization ($36,693.49 of $38K). Immediate payment needed to avoid hitting the limit.\"}, {\"icon\": \"\\u2705\", \"category\": \"Weekly Outlook\", \"message\": \"Improvement net $2,395.02 and Restoration net $37,863.69. Payroll for Improvement runs this Friday \\u2014 confirm cash availability before processing.\"}]",
-  "generated_at": "2026-03-24T09:30:00"
+  "generated_at": "2026-03-24T10:00:00"
 }
