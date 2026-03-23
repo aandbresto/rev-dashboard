@@ -80,7 +80,7 @@ snapshot = {
 
 try:
     db.table("daily_snapshots").insert(snapshot).execute()
-    print("  Snapshot")
+    print("  Snapshot OK")
 except Exception as e:
     print(f"  Snapshot failed: {e}")
     sys.exit(1)
@@ -99,7 +99,6 @@ for row in payload["ar"]["improvement"] + payload["ar"]["restoration"]:
         "notes": row.get("last_update"),
         "division": row.get("division"),
     })
-
 print(f"  {safe_insert('ar_items', ar_rows)} AR items")
 
 ap_rows = []
@@ -118,32 +117,31 @@ for row in payload["ap"]["improvement"] + payload["ap"]["restoration"]:
         "pay_friday": row.get("pay_friday"),
         "division": row.get("division"),
     })
-
 print(f"  {safe_insert('ap_items', ap_rows)} AP items")
 
 txn_rows = []
 for row in payload.get("transactions", []):
     account = row.get("account")
     txn_rows.append({
-        "report_date": report_date,
-        "account": account,
+        "report_date":  report_date,
+        "trans_date":   row.get("trans_date"),
+        "account":      account,
         "account_type": get_account_type(account),
-        "division": row.get("division"),
-        "card_no": row.get("card_desc"),
-        "vendor": row.get("vendor"),
-        "amount": row.get("amount"),
-        "explanation": row.get("explanation"),
-        "approved_by": row.get("approved_by"),
-        "txn_type": row.get("txn_type"),
+        "division":     row.get("division"),
+        "card_no":      row.get("card_desc"),
+        "vendor":       row.get("vendor"),
+        "amount":       row.get("amount"),
+        "explanation":  row.get("explanation"),
+        "approved_by":  row.get("approved_by"),
+        "txn_type":     row.get("txn_type"),
     })
-
 print(f"  {safe_insert('transactions', txn_rows)} transactions")
 
 if payload.get("brief"):
     try:
         db.table("daily_briefs").delete().eq("report_date", report_date).execute()
         db.table("daily_briefs").insert({"report_date": report_date, "brief": payload["brief"]}).execute()
-        print("  CFO brief")
+        print("  CFO brief OK")
     except Exception as e:
         print(f"  Brief failed: {e}")
 
