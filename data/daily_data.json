@@ -746,5 +746,42 @@
       "account": "Restoration Checking \u2013 7363",
       "division": "restoration"
     }
+  ],
+  "brief": [
+    {
+      "icon": "\u2705",
+      "category": "Healthy Position",
+      "message": "Net availability of $30,299.23 is solid. Keep an eye on AP obligations to maintain this buffer."
+    },
+    {
+      "icon": "\ud83c\udf89",
+      "category": "Great Collections Day",
+      "message": "$46,220.20 collected today across 3 payments \u2014 strong collections activity. Keep this momentum going."
+    },
+    {
+      "icon": "\ud83d\udea8",
+      "category": "Critical AR \u2014 Action Required",
+      "message": "6 invoice(s) are 60+ days overdue totaling $18,331.28. Escalate collections for: Custom Craft Homes, Yvonne Badger, Kingdom Roofing."
+    },
+    {
+      "icon": "\ud83d\udce4",
+      "category": "Payments Due This Week",
+      "message": "4 invoices totaling $10,242.46 are due within 7 days. Vendors include: X-Elent Remodeling, LCC, ECO Mold Testing, Amir Shoufany. Confirm approvals and fund accounts accordingly."
+    },
+    {
+      "icon": "\ud83d\udd27",
+      "category": "Improvement Division Watch",
+      "message": "Improvement net position is $1,822.63 \u2014 very tight. Consider transferring funds from MM account or accelerating AR collections for this division."
+    },
+    {
+      "icon": "\ud83c\udfe0",
+      "category": "Restoration Performing Well",
+      "message": "Restoration net position of $55,698.41 is strong. Good job keeping payables manageable relative to cash on hand."
+    },
+    {
+      "icon": "\ud83d\udca1",
+      "category": "AP/AR Gap",
+      "message": "Payables exceed receivables by $14,651.57. Focus on collecting outstanding invoices to close this gap before end of month."
+    }
   ]
 }
