@@ -884,12 +884,26 @@ async function loadAP() {
     (aData||[]).forEach(a => { fridayApprovals[a.vendor+'_'+(a.invoice_number||'')] = a; });
   } catch(e) {}
 
-  const saveFridayApproval = async (vendor, invoiceNum, division, status, comment, rdate) => {
+  window.saveFridayApproval = async (vendor, invoiceNum, division, status, comment, rdate) => {
     try {
-      await db.from('payment_approvals').delete().eq('report_date',rdate).eq('vendor',vendor).eq('invoice_number',invoiceNum||'');
-      if (status) await db.from('payment_approvals').insert({ report_date:rdate, vendor, invoice_number:invoiceNum||'', division, status, comment:comment||'', updated_at:new Date().toISOString() });
-      fridayApprovals[vendor+'_'+(invoiceNum||'')] = { status, comment };
-    } catch(e) { console.error(e); }
+      await db.from('payment_approvals').delete().eq('report_date',rdate).eq('vendor',vendor).eq('invoice_number',invoiceNum||'').execute();
+      if (status) {
+        await db.from('payment_approvals').insert({ 
+          report_date:rdate, vendor, invoice_number:invoiceNum||'', 
+          division, status, comment:comment||'', 
+          updated_at:new Date().toISOString() 
+        }).execute();
+      }
+      // Update UI
+      const key = vendor+'_'+(invoiceNum||'');
+      const badge = document.querySelector('[data-key="'+key+'"] .approval-badge');
+      const row = document.querySelector('[data-key="'+key+'"]');
+      if (badge) {
+        badge.textContent = status==='Approved'?'✅ Approved':status==='Hold'?'❌ Hold':'— Pending';
+        badge.style.color = status==='Approved'?'var(--green)':status==='Hold'?'var(--red)':'var(--text-muted)';
+      }
+      if (row) row.style.background = status==='Approved'?'rgba(34,197,94,0.04)':status==='Hold'?'rgba(239,68,68,0.04)':'';
+    } catch(e) { console.error('Approval error:', e); }
   };
 
   const renderFriday = (rows, tableId) => {
@@ -930,7 +944,6 @@ async function loadAP() {
     }).join('') + `<tr class="total-row"><td colspan="3">Total</td><td class="mono right">${fmt(rows.reduce((s,r)=>s+(r.amount||0),0))}</td><td colspan="5"></td></tr>`;
   };
 
-  window._saveAppr = saveFridayApproval;
   document.querySelector('#ap-friday-impr-table tbody').innerHTML = renderFriday(fridayImpr);
   document.querySelector('#ap-friday-rest-table tbody').innerHTML = renderFriday(fridayRest);
 }
@@ -1167,6 +1180,33 @@ function renderBrief(briefJson) {
     briefBody.innerHTML = '<div style="font-size:13px;">'+briefJson+'</div>';
   }
 }
+
+
+// ── APPROVAL BUTTON EVENT DELEGATION ─────────────────────────────────────
+document.addEventListener('click', function(e) {
+  const btn = e.target.closest('button[data-action]');
+  if (!btn) return;
+  const vendor = btn.dataset.vendor;
+  const inv    = btn.dataset.inv;
+  const div    = btn.dataset.div;
+  const date   = btn.dataset.date;
+  const action = btn.dataset.action;
+  // Get comment from the same row
+  const row     = btn.closest('tr');
+  const comment = row ? (row.querySelector('.approval-comment')?.value || '') : '';
+  window.saveFridayApproval(vendor, inv, div, action, comment, date);
+});
+
+document.addEventListener('blur', function(e) {
+  const inp = e.target.closest('input.approval-comment');
+  if (!inp) return;
+  const vendor = inp.dataset.vendor;
+  const inv    = inp.dataset.inv;
+  const div    = inp.dataset.div;
+  const date   = inp.dataset.date;
+  const status = inp.dataset.status;
+  window.saveFridayApproval(vendor, inv, div, status, inp.value, date);
+}, true);
 
 window.addEventListener('DOMContentLoaded', () => { initDashboard(); });
 </script>
