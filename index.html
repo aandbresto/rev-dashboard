@@ -884,6 +884,9 @@ async function loadAP() {
     (aData||[]).forEach(a => { fridayApprovals[a.vendor+'_'+(a.invoice_number||'')] = a; });
   } catch(e) {}
 
+  window._saveAppr = async (vendor, invoiceNum, division, status, comment, rdate) => {
+    await window.saveFridayApproval(vendor, invoiceNum, division, status, comment, rdate);
+  };
   window.saveFridayApproval = async (vendor, invoiceNum, division, status, comment, rdate) => {
     try {
       await db.from('payment_approvals').delete().eq('report_date',rdate).eq('vendor',vendor).eq('invoice_number',invoiceNum||'').execute();
