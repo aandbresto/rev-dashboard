@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'data/daily_data.json'
+  workflow_dispatch:
 
 jobs:
   upload:
