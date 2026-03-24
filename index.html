@@ -889,13 +889,13 @@ async function loadAP() {
   };
   window.saveFridayApproval = async (vendor, invoiceNum, division, status, comment, rdate) => {
     try {
-      await db.from('payment_approvals').delete().eq('report_date',rdate).eq('vendor',vendor).eq('invoice_number',invoiceNum||'').execute();
+      await db.from('payment_approvals').delete().eq('report_date',rdate).eq('vendor',vendor).eq('invoice_number',invoiceNum||'');
       if (status) {
         await db.from('payment_approvals').insert({ 
           report_date:rdate, vendor, invoice_number:invoiceNum||'', 
           division, status, comment:comment||'', 
           updated_at:new Date().toISOString() 
-        }).execute();
+        });
       }
       // Update UI
       const key = vendor+'_'+(invoiceNum||'');
