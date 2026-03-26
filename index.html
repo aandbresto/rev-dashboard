@@ -1552,9 +1552,10 @@ function frRender() {
 
   // Charts
   const ml = frMonth(row.report_month);
-  frMk('fr-chart-profit',   { type: 'bar', data: { labels: ['Prior Year', ml], datasets: [{ label: 'Gross Profit', data: [gpPY, gp], backgroundColor: BLUE, borderRadius: 4 }, { label: 'Net Profit', data: [npPY, np], backgroundColor: ORANGE, borderRadius: 4 }] }, options: frDefaults() });
-  frMk('fr-chart-payroll',  { type: 'bar', data: { labels: ['Prior Year', ml], datasets: [{ label: 'Payroll',  data: [payPY, pay], backgroundColor: BLUE, borderRadius: 4 }, { label: 'Revenue', data: [revPY, rev], backgroundColor: ORANGE, borderRadius: 4 }] }, options: frDefaults() });
-  frMk('fr-chart-expenses', { type: 'bar', data: { labels: ['Prior Year', ml], datasets: [{ label: 'Total Expenses', data: [expPY, exp], backgroundColor: BLUE, borderRadius: 4 }, { label: 'Revenue', data: [revPY, rev], backgroundColor: ORANGE, borderRadius: 4 }] }, options: frDefaults() });
+  const py_label = String(new Date(row.report_month + 'T12:00:00Z').getFullYear() - 1);
+  frMk('fr-chart-profit',   { type: 'bar', data: { labels: [py_label, ml], datasets: [{ label: 'Gross Profit', data: [gpPY, gp], backgroundColor: BLUE, borderRadius: 4 }, { label: 'Net Profit', data: [npPY, np], backgroundColor: ORANGE, borderRadius: 4 }] }, options: frDefaults() });
+  frMk('fr-chart-payroll',  { type: 'bar', data: { labels: [py_label, ml], datasets: [{ label: 'Payroll',  data: [payPY, pay], backgroundColor: BLUE, borderRadius: 4 }, { label: 'Revenue', data: [revPY, rev], backgroundColor: ORANGE, borderRadius: 4 }] }, options: frDefaults() });
+  frMk('fr-chart-expenses', { type: 'bar', data: { labels: [py_label, ml], datasets: [{ label: 'Total Expenses', data: [expPY, exp], backgroundColor: BLUE, borderRadius: 4 }, { label: 'Revenue', data: [revPY, rev], backgroundColor: ORANGE, borderRadius: 4 }] }, options: frDefaults() });
   frMk('fr-chart-target', {
     type: 'bar',
     data: { labels: [ml], datasets: [
@@ -1574,7 +1575,7 @@ function frRender() {
   const names    = [...new Set([...svc25.map(s => s.name), ...svc26.map(s => s.name)])];
   const getVal   = (arr, n) => (arr.find(s => s.name === n) || { val: 0 }).val;
   frMk('fr-chart-services', { type: 'bar', data: { labels: names, datasets: [
-    { label: 'Prior Year', data: names.map(n => getVal(svc25, n)), backgroundColor: BLUE,   borderRadius: 4 },
+    { label: py_label, data: names.map(n => getVal(svc25, n)), backgroundColor: BLUE,   borderRadius: 4 },
     { label: ml,           data: names.map(n => getVal(svc26, n)), backgroundColor: ORANGE, borderRadius: 4 }
   ]}, options: { ...frDefaults(), plugins: { ...frDefaults().plugins, tooltip: { ...frDefaults().plugins.tooltip, callbacks: { label: ctx => '  ' + ctx.dataset.label + ': ' + frFmt(ctx.parsed.y) } } } } });
 
@@ -1596,17 +1597,37 @@ function frRender() {
   }).join('');
 }
 
-function frLoadSummary() {
-  const el  = document.getElementById('fr-summary-body');
+async function frLoadSummary() {
+  const el = document.getElementById('fr-summary-body');
   if (!el) return;
-  const row = frData[frDiv];
+  el.innerHTML = '<div class="fr-inline-loading"><div class="fr-spinner"></div>Generating executive summary…</div>';
+  const row      = frData[frDiv];
   if (!row) { el.innerHTML = '<p>No data loaded.</p>'; return; }
-  if (row.summary) {
-    el.innerHTML = row.summary.split(/\n\n+/).filter(p => p.trim()).map(p => `<p>${p.trim()}</p>`).join('');
-  } else {
-    el.innerHTML = '<p style="color:var(--text-3)">No summary available for this month yet.</p>';
+  const py       = row.prior_year;
+  const divLabel = frDiv === 'construction' ? 'Construction (ABPI)' : 'Restoration (ABPR)';
+  const context  =
+    `Division: ${divLabel} — ${frMonth(row.report_month)}\n` +
+    `Revenue: ${frFmt(row.revenue)} vs ${frFmt(py.revenue)} prior year — ${frPct((row.revenue - py.revenue) / Math.abs(py.revenue) * 100)}\n` +
+    `Gross Profit: ${frFmt(row.gross_profit)} at ${(row.gross_profit/row.revenue*100).toFixed(1)}% margin vs ${frFmt(py.gross_profit)} at ${(py.gross_profit/py.revenue*100).toFixed(1)}%\n` +
+    `Net Income: ${frFmt(row.net_profit)} at ${(row.net_profit/row.revenue*100).toFixed(1)}% margin vs ${frFmt(py.net_profit)} at ${(py.net_profit/py.revenue*100).toFixed(1)}%\n` +
+    `Total Expenses: ${frFmt(row.total_expenses)} vs ${frFmt(py.total_expenses)}\n` +
+    `Payroll: ${frFmt(row.payroll)} vs ${frFmt(py.payroll)}\n` +
+    `Monthly Target: ${frFmt(row.target)} | Actual: ${frFmt(row.revenue)} = ${(row.revenue/row.target*100).toFixed(1)}% of target`;
+  try {
+    const res  = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000,
+        messages: [{ role: 'user', content: 'You are a CFO advisor. Write exactly 3 short paragraphs: (1) what improved and key drivers, (2) primary risks and gaps, (3) the single clearest action priority. Direct and analytical. Plain prose only — no markdown, no bullets, no headers.\n\n' + context }]
+      })
+    });
+    const data = await res.json();
+    const text = data?.content?.find(b => b.type === 'text')?.text || 'Unable to generate summary.';
+    el.innerHTML = text.split(/\n\n+/).filter(p => p.trim()).map(p => `<p>${p.trim()}</p>`).join('');
+  } catch (err) {
+    el.innerHTML = `<p style="color:var(--red)">Summary unavailable — ${err.message}</p>`;
   }
 }
+
 // Hook into showPage to lazy-load report data on first visit
 const _origShowPage = showPage;
 window.showPage = function(name) {
