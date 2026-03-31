@@ -1,6 +1,6 @@
 {
   "date": "2026-03-31",
-  "generated_at": "2026-03-31T14:55:02Z",
+  "generated_at": "2026-03-31T19:33:30Z",
   "cash_position": {
     "improvement": {
       "qb_bank_balance": 37093.479999999996,
@@ -304,7 +304,7 @@
         "approval_status": "RT Moore:25-0030-REP/Job 680939 LVT",
         "job_total": 570123.56,
         "due_date": "2025-06-27",
-        "pay_friday": "Yes",
+        "pay_friday": "No",
         "division": "improvement"
       },
       {
@@ -338,10 +338,10 @@
         "vendor": "DE Home Solutions LLC",
         "invoice_num": "228",
         "amount": 1332.99,
-        "billed": null,
-        "profit_pct": null,
-        "approval_status": "Pending - 681022 -",
-        "job_total": null,
+        "billed": 2132.78,
+        "profit_pct": 0.3749988278209661,
+        "approval_status": "681022 -  Invoice #33099 $3,256.00",
+        "job_total": 3256.0,
         "due_date": "2026-04-04",
         "pay_friday": "No",
         "division": "improvement"
@@ -356,7 +356,7 @@
         "approval_status": "681013 - Invoice #33092 $11,196.70 - PAID $1500 to Mario - his total was $2,267.46",
         "job_total": 32297.93,
         "due_date": "2026-03-25",
-        "pay_friday": "Yes",
+        "pay_friday": "No",
         "division": "improvement"
       },
       {
@@ -458,7 +458,7 @@
         "billed": null,
         "profit_pct": null,
         "approval_status": "680939 - Pending Invoice",
-        "job_total": null,
+        "job_total": 570123.56,
         "due_date": "2026-04-06",
         "pay_friday": "No",
         "division": "improvement"
@@ -482,7 +482,7 @@
         "invoice_num": "232",
         "amount": 400.0,
         "billed": 640.0,
-        "profit_pct": null,
+        "profit_pct": 0.375,
         "approval_status": "681024 - Invoice 33097 $640",
         "job_total": 640.0,
         "due_date": "2026-04-28",
@@ -494,11 +494,11 @@
         "vendor": "DE Home Solutions LLC",
         "invoice_num": "233",
         "amount": 671.17,
-        "billed": null,
-        "profit_pct": null,
-        "approval_status": "Pending - 681022 -",
-        "job_total": null,
-        "due_date": null,
+        "billed": 1073.87,
+        "profit_pct": 0.3749988359857338,
+        "approval_status": "681022 -  Invoice #33099 $3,256.00",
+        "job_total": 3256.0,
+        "due_date": "2026-04-28",
         "pay_friday": "No",
         "division": "improvement"
       },
@@ -553,7 +553,7 @@
         "approval_status": "26-0044-MLD - Invoice #4261 $1,800",
         "job_total": 1800.0,
         "due_date": "2026-03-25",
-        "pay_friday": "Yes",
+        "pay_friday": "No",
         "division": "restoration"
       },
       {
@@ -566,7 +566,7 @@
         "approval_status": "26-0047-FIRE -  Invoice #4254 $1,050",
         "job_total": 1050.0,
         "due_date": "2026-03-31",
-        "pay_friday": "No",
+        "pay_friday": "Yes",
         "division": "restoration"
       },
       {
@@ -579,7 +579,7 @@
         "approval_status": "26-0041-MLD - Invoice #4272 $7,696.54",
         "job_total": 7696.54,
         "due_date": "2026-04-01",
-        "pay_friday": "No",
+        "pay_friday": "Yes",
         "division": "restoration"
       },
       {
@@ -592,7 +592,7 @@
         "approval_status": "26-0002-DMO - Invoice #4269 $11,903.45",
         "job_total": 11903.45,
         "due_date": "2026-04-01",
-        "pay_friday": "No",
+        "pay_friday": "Yes",
         "division": "restoration"
       },
       {
@@ -605,7 +605,7 @@
         "approval_status": "25-0205-STC - Invoice #4253 $6,936.52.",
         "job_total": 6936.52,
         "due_date": "2026-04-01",
-        "pay_friday": "No",
+        "pay_friday": "Yes",
         "division": "restoration"
       },
       {
@@ -618,7 +618,7 @@
         "approval_status": "26-0042-WTR - Invoice #4262 $7,568.48",
         "job_total": 7568.48,
         "due_date": "2026-04-01",
-        "pay_friday": "No",
+        "pay_friday": "Yes",
         "division": "restoration"
       },
       {
@@ -631,7 +631,7 @@
         "approval_status": "26-0018-MLD - Invoice #4257 $950",
         "job_total": 950.0,
         "due_date": "2026-04-01",
-        "pay_friday": "No",
+        "pay_friday": "Yes",
         "division": "restoration"
       },
       {
@@ -789,7 +789,7 @@
     {
       "icon": "\ud83d\udce4",
       "category": "Payments Due This Week",
-      "message": "15 invoices totaling $25,143.29 due within 7 days. Vendors: BrighLight, Amir Shoufany, DE Home Solutions LLC. Confirm approvals and fund accounts."
+      "message": "15 invoices totaling $25,143.29 due within 7 days. Vendors: BrighLight, DE Home Solutions LLC, Amir Shoufany. Confirm approvals and fund accounts."
     },
     {
       "icon": "\ud83d\udd27",
