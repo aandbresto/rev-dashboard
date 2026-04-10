@@ -1462,7 +1462,7 @@ async function loadMonthlySnapshot() {
     frAllRows = rows;
     frPopulateMonthSelect(rows);
     // Default to most recent month
-    const latest = rows[0].report_month;
+    const latest = (rows[0].report_month||'').slice(0,10);
     frSelMonth = latest;
     frLoadMonth(latest);
   } catch (e) {
@@ -1472,7 +1472,7 @@ async function loadMonthlySnapshot() {
 
 function frPopulateMonthSelect(rows) {
   // Get unique months in descending order
-  const months = [...new Set(rows.map(r => (r.report_month || '').slice(0,10)))].sort().reverse();
+  const months = [...new Set(rows.map(r => (r.report_month||'').slice(0,10)))].sort().reverse();
   const sel = document.getElementById('fr-month-select');
   if (!sel) return;
   sel.innerHTML = months.map(m =>
@@ -1488,7 +1488,7 @@ function frSelectMonth(month) {
 
 function frLoadMonth(month) {
   frData = {};
-  frAllRows.filter(r => (r.report_month || '').slice(0,10) === (month || '').slice(0,10)).forEach(r => { frData[r.division] = r; });
+  frAllRows.filter(r => (r.report_month||'').slice(0,10) === (month||'').slice(0,10)).forEach(r => { frData[r.division] = r; });
   frRender();
   frLoadSummary();
 }
