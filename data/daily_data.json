@@ -1,17 +1,17 @@
 {
   "date": "2026-04-13",
-  "generated_at": "2026-04-13T18:19:15Z",
+  "generated_at": "2026-04-13T19:29:20Z",
   "cash_position": {
     "improvement": {
       "qb_bank_balance": 29460.82,
       "bank_balance_2657": 25496.95,
       "money_market_2690": 32546.75,
       "total_cash_in_bank": 58043.7,
-      "accounts_receivable": 17835.68,
+      "accounts_receivable": 33072.97,
       "cap_one_cc": 15406.93,
       "loc_3705": 4431.14,
-      "accounts_payable": 76605.43999999999,
-      "net_total": -16600.259999999987
+      "accounts_payable": 81267.73999999999,
+      "net_total": -6025.269999999975
     },
     "restoration": {
       "qb_bank_balance": 5975.88,
@@ -26,15 +26,15 @@
     },
     "combined": {
       "total_cash_in_bank": 67623.62,
-      "total_ar": 89825.29999999999,
-      "total_ap": 89025.43999999999,
+      "total_ar": 105062.59,
+      "total_ap": 93687.73999999999,
       "credit_debt": 66186.62,
-      "net_cash_availability": 2236.8600000000006
+      "net_cash_availability": 12811.850000000006
     }
   },
   "ar": {
     "totals": {
-      "total_ar": 89825.29999999999,
+      "total_ar": 105062.59,
       "impr_ar": null,
       "rest_ar": null
     },
@@ -92,6 +92,17 @@
         "days_out": 13.0,
         "expected_payment": "2026-04-17",
         "last_update": "04/06 - EPO Fully Approved - 14301201_045657",
+        "division": "improvement"
+      },
+      {
+        "invoice_num": "4297",
+        "client_job": "RT Moore:25-0030-REP/Job 680939",
+        "balance": 15237.29,
+        "invoice_date": "2026-04-17",
+        "due_date": "2026-05-17",
+        "days_out": null,
+        "expected_payment": "2026-05-17",
+        "last_update": "Pending sending to client",
         "division": "improvement"
       }
     ],
@@ -353,8 +364,8 @@
   },
   "ap": {
     "totals": {
-      "total_ap": 89025.43999999999,
-      "impr_ap": 76605.43999999999,
+      "total_ap": 93687.73999999999,
+      "impr_ap": 81267.73999999999,
       "rest_ap": 12420.0
     },
     "improvement": [
@@ -537,7 +548,7 @@
         "approval_status": "Pending - 681025 -",
         "job_total": null,
         "due_date": "2026-04-10",
-        "pay_friday": "Yes",
+        "pay_friday": "No",
         "division": "improvement"
       },
       {
@@ -615,6 +626,32 @@
         "approval_status": "Pending - 681025 -",
         "job_total": null,
         "due_date": "2026-05-09",
+        "pay_friday": "No",
+        "division": "improvement"
+      },
+      {
+        "inv_date": "2026-04-13",
+        "vendor": "Amir Shoufany",
+        "invoice_num": "70",
+        "amount": 3862.3,
+        "billed": null,
+        "profit_pct": null,
+        "approval_status": "Pending - 680939 -",
+        "job_total": null,
+        "due_date": "2026-04-28",
+        "pay_friday": "No",
+        "division": "improvement"
+      },
+      {
+        "inv_date": "2026-04-13",
+        "vendor": "Amir Shoufany",
+        "invoice_num": "69",
+        "amount": 800.0,
+        "billed": null,
+        "profit_pct": null,
+        "approval_status": "Pending - 680125 -",
+        "job_total": null,
+        "due_date": "2026-04-28",
         "pay_friday": "No",
         "division": "improvement"
       }
@@ -901,7 +938,7 @@
     {
       "icon": "\u26a0\ufe0f",
       "category": "Cash Alert",
-      "message": "Net availability is $2,236.86 \u2014 tighter than ideal. Prioritize collections and delay non-critical payments if possible."
+      "message": "Net availability is $12,811.85 \u2014 tighter than ideal. Prioritize collections and delay non-critical payments if possible."
     },
     {
       "icon": "\ud83d\udea8",
@@ -911,12 +948,12 @@
     {
       "icon": "\ud83d\udce4",
       "category": "Payments Due This Week",
-      "message": "3 invoices totaling $4,138.52 due within 7 days. Vendors: BrighLight, X-Elent Remodeling, LCC, Amir Shoufany. Confirm approvals and fund accounts."
+      "message": "3 invoices totaling $4,138.52 due within 7 days. Vendors: BrighLight, Amir Shoufany, X-Elent Remodeling, LCC. Confirm approvals and fund accounts."
     },
     {
       "icon": "\ud83d\udd27",
       "category": "Improvement Division Watch",
-      "message": "Improvement net position is $-16,600.26 \u2014 very tight. Consider transferring from MM or accelerating AR collections."
+      "message": "Improvement net position is $-6,025.27 \u2014 very tight. Consider transferring from MM or accelerating AR collections."
     }
   ]
 }
