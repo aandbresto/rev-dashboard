@@ -1,6 +1,6 @@
 {
   "date": "2026-04-27",
-  "generated_at": "2026-04-27T14:09:58Z",
+  "generated_at": "2026-04-27T18:36:39Z",
   "cash_position": {
     "improvement": {
       "qb_bank_balance": 26879.44,
@@ -18,23 +18,23 @@
       "bank_balance_7363": 25402.23,
       "money_market_2798": 7060.52,
       "total_cash_in_bank": 32462.75,
-      "accounts_receivable": 61539.08,
+      "accounts_receivable": 59544.3,
       "loc_5064": 12058.63,
       "cap_one_cc": 35101.78,
       "accounts_payable": 11112.82,
-      "net_total": 36532.99
+      "net_total": 34538.21
     },
     "combined": {
       "total_cash_in_bank": 74561.75,
-      "total_ar": 116719.67000000001,
+      "total_ar": 114724.89000000001,
       "total_ap": 70000.31,
       "credit_debt": 69421.29,
-      "net_cash_availability": 51859.82000000002
+      "net_cash_availability": 49865.04000000002
     }
   },
   "ar": {
     "totals": {
-      "total_ar": 116719.67000000001,
+      "total_ar": 114724.89000000001,
       "impr_ar": null,
       "rest_ar": null
     },
@@ -69,7 +69,7 @@
         "due_date": "2026-05-17",
         "days_out": 10.0,
         "expected_payment": "2026-05-17",
-        "last_update": "Pending sending to client",
+        "last_update": "04/21 - Sent to client",
         "division": "improvement"
       },
       {
@@ -80,7 +80,7 @@
         "due_date": "2026-05-17",
         "days_out": 10.0,
         "expected_payment": "2026-05-17",
-        "last_update": "4/17 Email sent to Steve.",
+        "last_update": "4/27  - EPO in Future orders",
         "division": "improvement"
       },
       {
@@ -91,7 +91,7 @@
         "due_date": "2026-05-21",
         "days_out": 6.0,
         "expected_payment": "2026-05-21",
-        "last_update": null,
+        "last_update": "04/24 - EPO EPO 14301201_046174 fully approved",
         "division": "improvement"
       }
     ],
@@ -159,7 +159,7 @@
         "due_date": "2026-04-15",
         "days_out": 42.0,
         "expected_payment": "2026-04-15",
-        "last_update": "04/04 - Rebecca said invoice was submitted, a check will be issued",
+        "last_update": "04/27 - Check Received",
         "division": "restoration"
       },
       {
@@ -181,7 +181,7 @@
         "due_date": "2026-04-24",
         "days_out": 33.0,
         "expected_payment": "2026-04-24",
-        "last_update": "03/30 - EPO 2400286-000 fully complete",
+        "last_update": "04/27 - Payment hasnt arrived, call Alison, she was driving, she will check if a check has been issued and call me back.",
         "division": "restoration"
       },
       {
@@ -192,7 +192,7 @@
         "due_date": "2026-04-03",
         "days_out": 24.0,
         "expected_payment": "2026-04-17",
-        "last_update": "04/14 - Client submitted the invoice to insurance, asked if we could change the wording for it to go through and will be mailing a check",
+        "last_update": "04/23 - Called Brett to follow up on insurance, no response, left VM",
         "division": "restoration"
       },
       {
@@ -203,7 +203,7 @@
         "due_date": "2026-05-07",
         "days_out": 20.0,
         "expected_payment": "2026-05-07",
-        "last_update": "04/15 - EPO in future orders",
+        "last_update": "04/23 - Email sent to Eriel, EPO still shows in future orders",
         "division": "restoration"
       },
       {
@@ -214,7 +214,7 @@
         "due_date": "2026-05-10",
         "days_out": 17.0,
         "expected_payment": "2026-05-10",
-        "last_update": "04/10 - Invoice sent",
+        "last_update": "04/21 - Invoice was processed, check should arrive in 2 weeks",
         "division": "restoration"
       },
       {
@@ -229,17 +229,6 @@
         "division": "restoration"
       },
       {
-        "invoice_num": "4299",
-        "client_job": "James Toolen:4705 Sarca Court-26-0069-WTR",
-        "balance": 1994.78,
-        "invoice_date": "2026-04-15",
-        "due_date": "2026-04-15",
-        "days_out": 12.0,
-        "expected_payment": "2026-04-17",
-        "last_update": "4/15/2026 invoice created",
-        "division": "restoration"
-      },
-      {
         "invoice_num": "4301",
         "client_job": "Taylor Morrison:15171 Contenta Loop-26-0088-STC",
         "balance": 650.0,
@@ -247,7 +236,7 @@
         "due_date": "2026-05-17",
         "days_out": 10.0,
         "expected_payment": "2026-05-17",
-        "last_update": "04/17 - Invoice created",
+        "last_update": "04/23 - EPO 14303201_035626  gully approved",
         "division": "restoration"
       },
       {
@@ -258,7 +247,7 @@
         "due_date": "2026-05-17",
         "days_out": 10.0,
         "expected_payment": "2026-05-17",
-        "last_update": "04/17 - Invoice created - emailed Alhanna requesting EPO",
+        "last_update": "04/24 - EPO 14311201_008677 fully approved",
         "division": "restoration"
       },
       {
@@ -269,7 +258,7 @@
         "due_date": "2026-05-21",
         "days_out": 6.0,
         "expected_payment": "2026-05-21",
-        "last_update": "04/21 - Requested WA to be updated.",
+        "last_update": "04/27 - Spoke to Jason, they have a new process for invoices, sent to the email address he provided for invoices so he can approve it.",
         "division": "restoration"
       },
       {
@@ -749,9 +738,9 @@
   ],
   "brief": [
     {
-      "icon": "\ud83c\udf1f",
-      "category": "Strong Position",
-      "message": "Net availability is $51,859.82 \u2014 excellent liquidity today. Both divisions are well-positioned to cover upcoming obligations."
+      "icon": "\u2705",
+      "category": "Healthy Position",
+      "message": "Net availability of $49,865.04 is solid. Keep an eye on AP obligations to maintain this buffer."
     },
     {
       "icon": "\ud83d\udce5",
@@ -766,7 +755,7 @@
     {
       "icon": "\ud83d\udce4",
       "category": "Payments Due This Week",
-      "message": "9 invoices totaling $9,004.29 due within 7 days. Vendors: DE Home Solutions LLC, Damm Good Plumbing. Confirm approvals and fund accounts."
+      "message": "9 invoices totaling $9,004.29 due within 7 days. Vendors: Damm Good Plumbing, DE Home Solutions LLC. Confirm approvals and fund accounts."
     }
   ]
 }
