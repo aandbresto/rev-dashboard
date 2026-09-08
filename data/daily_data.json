@@ -1,5 +1,5 @@
 {
-  "date": "2026-09-05",
+  "date": "2026-09-08",
   "cash_position": {
     "improvement": {
       "qb_bank_balance": 10645.12,
@@ -1133,7 +1133,7 @@
     {
       "icon": "\u2705",
       "category": "DEBT PAYDOWN RECOMMENDATION \u2014 BOTH POSITIVE",
-      "message": "Improvement: no payroll due this window (next 9/18). $28,354.83 cash vs. $19,460.14 obligations (Friday AP $9,460.14 with Kingdom cap applied, $10K reserve) = $8,894.69 available. Restoration: 9/11 payroll is 6 days out, included. $57,915.84 cash vs. $32,815.25 obligations (payroll $15,500, Friday AP $5,020.00, biz expenses $295.25, $12K reserve) = $25,100.59 available. Both recommended: Cap One Construction ($13,004.10) and Cap One Restoration ($27,362.12) remain the priority targets."
+      "message": "Improvement: no payroll due this window (next 9/18). $28,354.83 cash vs. $21,388.14 obligations (Friday AP $9,460.14 with Kingdom cap applied, biz expenses $1,928.00 [IFPS, due 9/13], $10K reserve) = $6,966.69 available. Restoration: 9/11 payroll is 3 days out, included. $57,915.84 cash vs. $32,815.25 obligations (payroll $15,500, Friday AP $5,020.00, biz expenses $295.25, $12K reserve) = $25,100.59 available. Both recommended: Cap One Construction ($13,004.10) and Cap One Restoration ($27,362.12) remain the priority targets."
     },
     {
       "icon": "\ud83c\udfe0",
