@@ -202,7 +202,6 @@ body {
     <div class="nav-tab" onclick="showPage('cashflow')">Cash Flow</div>
     <div class="nav-tab" onclick="showPage('monthlysnapshot')">Monthly Snapshot</div>
     <div class="nav-tab" onclick="showPage('payroll')">Payroll</div>
-    <div class="nav-tab" onclick="showPage('profitshare')">Profit Share</div>
   </div>
 
   <div class="content">
@@ -596,18 +595,6 @@ body {
   <div id="pr-restoration-section"></div>
   <div id="pr-admin-section"></div>
   <div id="pr-construction-section"></div>
-</div>
-
-<div class="page" id="page-profitshare">
-  <div class="fr-page-header">
-    <div>
-      <div class="page-title">Profit Share</div>
-      <div class="fr-page-sub" id="ps-period-label">Loading period…</div>
-    </div>
-    <select class="date-select" id="ps-period-select" onchange="loadProfitShare()"></select>
-  </div>
-
-  <div id="ps-content"></div>
 </div>
 
 </div>
@@ -2070,127 +2057,6 @@ async function loadPayroll() {
   document.getElementById('pr-construction-section').innerHTML = renderDivision('construction', 'Construction Payroll', '🔧', consPeriod);
 }
 
-// ── PROFIT SHARE TAB ─────────────────────────────────────────────────────────
-// The allocation structure (pools, employees, percentages) is a fixed business
-// rule, not period data — hardcoded here the same way PAYROLL_TEAM is. Each
-// employee's % is already expressed as a share of the TOTAL pool (the three
-// pools' member percentages already sum to 70/15/15), not a share within
-// their own pool, so total_pool * pct is the direct dollar calculation.
-const PROFIT_SHARE_ALLOCATION = [
-  { name: 'Jacob Mercer',        pool: 'Leadership', pct: 50 },
-  { name: 'Quena Valenzuela',    pool: 'Leadership', pct: 20 },
-  { name: 'Briz Portillo',       pool: 'Operations', pct: 7.5 },
-  { name: 'Oziel Molina',        pool: 'Operations', pct: 7.5 },
-  { name: 'Jaime Walker',        pool: 'Production', pct: 9 },
-  { name: 'Derick Thibodeaux',   pool: 'Production', pct: 6 },
-];
-const PROFIT_SHARE_POOL_PCTS = { Leadership: 70, Operations: 15, Production: 15 };
-// The pool itself is 12% of reclassified Net Income for the period.
-const PROFIT_SHARE_POOL_RATE = 0.12;
-
-let psAllPeriods = [];
-
-async function loadProfitShare() {
-  const sel = document.getElementById('ps-period-select');
-  if (!sel.options.length) {
-    try {
-      const { data } = await db.from('profit_share_periods').select('*').order('period_start', {ascending:false});
-      psAllPeriods = data || [];
-    } catch(e) { console.error('Profit share load error:', e); psAllPeriods = []; }
-    if (!psAllPeriods.length) {
-      // No period entered yet — still show the upcoming first period as a placeholder
-      psAllPeriods = [{ period_start: '2026-06-01', period_end: '2026-08-31' }];
-    }
-    sel.innerHTML = psAllPeriods.map((p,i) =>
-      `<option value="${i}">${fmtDate(p.period_start)} – ${fmtDate(p.period_end)}</option>`).join('');
-  }
-
-  const period = psAllPeriods[parseInt(sel.value || 0)];
-  document.getElementById('ps-period-label').textContent =
-    `${fmtDate(period.period_start)} – ${fmtDate(period.period_end)}`;
-
-  const el = document.getElementById('ps-content');
-  const hasData = period.revenue != null;
-  if (!hasData) {
-    el.innerHTML = `<div class="card fr-table-card" style="padding:24px;color:var(--text-3);">
-      No financial data entered for this period yet. Once the QuickBooks P&L and payroll/wage/WC breakdowns
-      are provided, this will show the reclassified P&L, the profit share pool, and each person's allocation.
-    </div>`;
-    return;
-  }
-
-  // ── Reclassification math ──────────────────────────────────────────────
-  // Field labor + WC + field payroll taxes, and the support-team allocation,
-  // move from OpEx into COGS — Net Income is unchanged either way.
-  const revenue          = period.revenue;
-  const cogsOriginal      = period.cogs_original;
-  const laborBurden       = period.reclassified_labor_burden || 0;
-  const supportAlloc      = period.reclassified_support_allocation || 0;
-  const opexOriginal      = period.opex_original;
-  const netIncome         = period.net_income;
-
-  const cogsReclassified  = cogsOriginal + laborBurden + supportAlloc;
-  const opexReclassified  = opexOriginal - laborBurden - supportAlloc;
-  const grossProfitOrig   = revenue - cogsOriginal;
-  const grossProfitRecl   = revenue - cogsReclassified;
-  const marginOrig        = revenue ? grossProfitOrig / revenue * 100 : 0;
-  const marginRecl        = revenue ? grossProfitRecl / revenue * 100 : 0;
-
-  const pool = netIncome * PROFIT_SHARE_POOL_RATE;
-
-  // Temporary: individual dollar amounts hidden pending verification of the
-  // underlying figures. Flip to true to restore once confirmed correct.
-  const PROFIT_SHARE_SHOW_AMOUNTS = false;
-
-  const poolsHtml = Object.entries(PROFIT_SHARE_POOL_PCTS).map(([poolName, poolPct]) => {
-    const members = PROFIT_SHARE_ALLOCATION.filter(a => a.pool === poolName);
-    const poolTotal = pool * poolPct / 100;
-    const amountCell = amt => PROFIT_SHARE_SHOW_AMOUNTS
-      ? fmt(amt) : '<span style="color:var(--text-3);font-size:11px;">Pending review</span>';
-    const rows = members.map(m => `<tr>
-      <td>${m.name}</td>
-      <td class="right mono">${m.pct}%</td>
-      <td class="right mono" style="font-weight:600;">${amountCell(pool * m.pct / 100)}</td>
-    </tr>`).join('');
-    return `
-      <div class="fr-section-label">${poolName} Pool — ${poolPct}% of total pool</div>
-      <div class="card fr-table-card">
-        <table class="data-table">
-          <thead><tr><th>Employee</th><th style="text-align:right">% of Total Pool</th><th style="text-align:right">Amount</th></tr></thead>
-          <tbody>${rows}</tbody>
-          <tfoot><tr class="total-row"><td>Pool Total — ${poolName}</td><td class="right mono">${poolPct}%</td><td class="right mono">${amountCell(poolTotal)}</td></tr></tfoot>
-        </table>
-      </div>`;
-  }).join('');
-
-  el.innerHTML = `
-    <div class="fr-section-label">Reclassified P&L</div>
-    <div class="card fr-table-card">
-      <table class="data-table">
-        <thead><tr><th>Line</th><th style="text-align:right">Amount</th></tr></thead>
-        <tbody>
-          <tr><td>Revenue</td><td class="right mono">${fmt(revenue)}</td></tr>
-          <tr><td>Less: COGS (materials, subs, equipment, fuel)</td><td class="right mono">${fmt(cogsOriginal)}</td></tr>
-          <tr><td>Less: Field labor + WC + field payroll taxes</td><td class="right mono">${fmt(laborBurden)}</td></tr>
-          <tr><td>Less: Support team allocation</td><td class="right mono">${fmt(supportAlloc)}</td></tr>
-          <tr style="background:var(--green-bg);"><td style="font-weight:700;">GROSS PROFIT</td><td class="right mono" style="font-weight:700;">${fmt(grossProfitRecl)}</td></tr>
-          <tr style="background:var(--green-bg);"><td style="font-weight:700;">GROSS MARGIN</td><td class="right mono" style="font-weight:700;">${marginRecl.toFixed(1)}%</td></tr>
-          <tr><td>Less: Operating expenses</td><td class="right mono">${fmt(opexReclassified)}</td></tr>
-          <tr style="background:var(--green-bg);"><td style="font-weight:700;">NET INCOME</td><td class="right mono" style="font-weight:700;">${fmt(netIncome)}</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="fr-section-label">Profit Share Pool</div>
-    <div class="card fr-table-card" style="padding:20px;display:flex;gap:40px;flex-wrap:wrap;">
-      <div><div style="font-size:11px;color:var(--text-3);">Net Income (reclassified)</div><div style="font-size:20px;font-weight:600;">${fmt(netIncome)}</div></div>
-      <div><div style="font-size:11px;color:var(--text-3);">Pool Rate</div><div style="font-size:20px;font-weight:600;">${(PROFIT_SHARE_POOL_RATE*100).toFixed(0)}%</div></div>
-      <div><div style="font-size:11px;color:var(--text-3);">Total Profit Share Pool</div><div style="font-size:20px;font-weight:700;color:var(--green);">${fmt(pool)}</div></div>
-    </div>
-
-    ${poolsHtml}
-  `;
-}
 
 // Hook into showPage to lazy-load on first visit
 const _origShowPage = showPage;
@@ -2198,7 +2064,6 @@ window.showPage = function(name) {
   _origShowPage(name);
   if (name === 'monthlysnapshot' && !frData.construction) loadMonthlySnapshot();
   if (name === 'payroll') loadPayroll();
-  if (name === 'profitshare') loadProfitShare();
 };
 
 </script>
